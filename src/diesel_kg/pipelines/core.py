@@ -6,7 +6,7 @@ separate branches. Missing expert, causal gold or event data never becomes a
 numerical paper result. Run --help for training and recorded-checkpoint modes.
 """
 from __future__ import annotations
-from diesel_kg.paths import PROJECT_ROOT, CONFIG_DIR, resolve_script, source_dependencies
+from diesel_kg.paths import PROJECT_ROOT, CONFIG_DIR, resolve_script, source_dependencies, resolve_recorded_path
 import argparse
 import ast
 import hashlib
@@ -273,7 +273,7 @@ def completed_ner_execution(output_root, args):
 
 def models_and_inference(a, runner):
     inputs=a.output/'inputs'
-    re_pre=a.assets_dir/'pretrained/bert-base-chinese'; ner_pre=a.assets_dir/'pretrained/chinese-roberta-wwm-ext'
+    re_pre=a.assets_dir/'tokenizers/bert-base-chinese'; ner_pre=a.assets_dir/'tokenizers/chinese-roberta-wwm-ext'
     ner_executions={}; re_executions={}
     if a.ner_mode=='train':
         for variant in a.variants:
@@ -304,7 +304,7 @@ def models_and_inference(a, runner):
         references[variant]['input_audit']=verify_model_inputs(re_root/variant/'run_configuration.json',inputs,'RelationExtraction.py','re_data','.json')
     for variant in a.variants:
         inference_device=a.bert_inference_device or a.inference_device if variant.startswith('bert_identity_repair') else a.inference_device
-        ckpt=ner_root/variant/'best_roberta_ner_model.pt'
+        ckpt=resolve_recorded_path(ner_root/variant/'best_roberta_ner_model.pt')
         references[variant]=model_reference(ckpt,ner_root/variant/'summary.json',ner_executions.get(variant))
         references[variant]['input_audit']=verify_model_inputs(ner_root/variant/'config.json',inputs,'EntityExtraction.py','ner_data','.txt')
         runner.run(f'NER_final_audit_{variant}','diesel_kg.evaluation.ner',

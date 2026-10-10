@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import hashlib
-import os
 from pathlib import Path
 import shutil
 import sys
@@ -14,7 +13,7 @@ def step(name, module, *args):
 
 
 def reuse_models(saved: Path, output: Path):
-    """Copy mutable model records; share immutable weights within the project.
+    """Copy mutable records and reference the original immutable weight files.
 
     These remain records of earlier training, not training performed by a replay.
     The model-specific verification stages check the copied records and weights.
@@ -34,19 +33,21 @@ def reuse_models(saved: Path, output: Path):
         for path in sorted(source.rglob('*')):
             if not path.is_file() or path.suffix == '.log':
                 continue
+            if path.relative_to(source).parts[0] == 'feature_cache':
+                continue
             if path.name in ('corpus_entities.jsonl', 'corpus_entities.summary.json'):
                 continue
             destination = target / path.relative_to(source)
-            destination.parent.mkdir(parents=True, exist_ok=True)
             if path.suffix in ('.pt', '.bin', '.safetensors'):
-                destination.symlink_to(os.path.relpath(path.resolve(), destination.parent))
                 digest = hashlib.sha256()
                 with path.open('rb') as stream:
                     for block in iter(lambda: stream.read(8 << 20), b''):
                         digest.update(block)
-                records.append({'path': str(destination), 'source': str(path),
+                records.append({'path': str(path.resolve()), 'source': str(path.resolve()),
+                                'relative_path': str(destination.relative_to(output)),
                                 'sha256': digest.hexdigest(), 'mode': 'recorded_checkpoint'})
             else:
+                destination.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(path, destination)
     return records
 
@@ -57,8 +58,8 @@ def build_plan(args, config):
     assets = config['assets_dir']
     cases = output / 'inputs/cases_all.jsonl'
     source = output / 'inputs/original_source/RelationExtraction.py'
-    pretrained = assets / 'pretrained/bert-base-chinese'
-    tokenizer = assets / 'pretrained/chinese-roberta-wwm-ext'
+    pretrained = assets / 'tokenizers/bert-base-chinese'
+    tokenizer = assets / 'tokenizers/chinese-roberta-wwm-ext'
     adaptation = output / 'ner_domain/adaptation'
     re_output = output / 're_clean'
     legacy = (output if args.train else saved) / 'recorded_RE_training'

@@ -13,6 +13,7 @@ import json
 import math
 from pathlib import Path
 import tempfile
+from diesel_kg.paths import resolve_recorded_path
 
 PRIMARY_NER_VARIANTS = ('source_roberta','bert_identity_repair_rebuilt')
 
@@ -21,7 +22,7 @@ def load(p): return json.loads(Path(p).read_text())
 def rows(p): return [json.loads(l) for l in Path(p).read_text().splitlines() if l.strip()]
 def sha(p):
     h=hashlib.sha256()
-    with Path(p).open('rb') as f:
+    with resolve_recorded_path(p).open('rb') as f:
         for b in iter(lambda:f.read(4194304),b''): h.update(b)
     return h.hexdigest()
 

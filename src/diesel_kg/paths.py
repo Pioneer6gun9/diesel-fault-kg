@@ -12,8 +12,7 @@ ORIGINAL_KG_DIR = PROJECT_ROOT / 'data/kg_build'
 PACKAGE_DIR = Path(__file__).resolve().parent
 
 
-def resolve_recorded_path(value: str | Path) -> Path:
-    """Resolve historical metadata against local files without rewriting records."""
+def _resolve_aliases(value: str | Path) -> Path:
     path = Path(value)
     if not path.is_absolute():
         path = PROJECT_ROOT / path
@@ -26,6 +25,33 @@ def resolve_recorded_path(value: str | Path) -> Path:
     for old, target in sorted(prefixes, key=lambda item: len(str(item[0])), reverse=True):
         if path.is_relative_to(old):
             return PROJECT_ROOT / target / path.relative_to(old)
+    return path
+
+
+def resolve_recorded_path(value: str | Path) -> Path:
+    """Resolve saved paths and reused weights without creating alias files.
+
+    Reused checkpoints are referenced in the existing pipeline manifest. Their
+    hashes are checked by the runner and model-specific verification stages.
+    Historical metadata stays unchanged when resources are moved.
+    """
+    path = _resolve_aliases(value)
+    if path.is_file() or path.suffix not in {'.pt', '.pth', '.bin', '.safetensors'}:
+        return path
+    for directory in path.parents:
+        manifest = directory / 'pipeline.json'
+        if not manifest.is_file():
+            continue
+        records = json.loads(manifest.read_text(encoding='utf-8')).get('recorded_checkpoints', [])
+        for record in records:
+            relative = record.get('relative_path')
+            candidate = directory / relative if relative else _resolve_aliases(record['path'])
+            if candidate != path:
+                continue
+            source = _resolve_aliases(record['source'])
+            if source == path or not source.is_file():
+                raise FileNotFoundError(f'Reused checkpoint source is unavailable: {source}')
+            return source
     return path
 
 

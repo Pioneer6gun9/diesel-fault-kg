@@ -2,7 +2,7 @@
   "/Users/kkfrank/MAC/work/weichai/code/diesel-fault-kg": ".",
   "/Users/kkfrank/MAC/work/weichai/code/weichai_kg/paper_reproduction": ".",
   "/Users/kkfrank/MAC/work/weichai/code/weichai_kg/kg_build": "data/kg_build",
-  "/Users/kkfrank/MAC/work/Codex/2026-10-06/you/work/pretrained": "assets/pretrained",
+  "/Users/kkfrank/MAC/work/Codex/2026-10-06/you/work/pretrained": "assets/tokenizers",
   "/Users/kkfrank/MAC/work/Codex/2026-10-06/you/work/tokenizers": "assets/tokenizers",
   "/Users/kkfrank/MAC/work/Codex/2026-10-06/you/outputs/weichai_kg_full_reproduction": "results/experiments",
   "/Users/kkfrank/MAC/work/Codex/2026-10-06/you/outputs/weichai_kg_continued_validation": "results/experiments",
@@ -34,5 +34,11 @@
   "results/baseline/official_assets_verification.json": "results/.provenance/experiments/official_assets_verification.json",
   "/Users/kkfrank/MAC/work/Codex/2026-10-06/you/outputs/weichai_kg_full_reproduction/graph_support_mode_regression.json": "results/.provenance/experiments/graph_support_mode_regression.json",
   "/Users/kkfrank/MAC/work/Codex/2026-10-06/you/outputs/weichai_kg_full_reproduction/large_assets_manifest.json": "results/.provenance/experiments/large_assets_manifest.json",
-  "/Users/kkfrank/MAC/work/Codex/2026-10-06/you/outputs/weichai_kg_full_reproduction/official_assets_verification.json": "results/.provenance/experiments/official_assets_verification.json"
+  "/Users/kkfrank/MAC/work/Codex/2026-10-06/you/outputs/weichai_kg_full_reproduction/official_assets_verification.json": "results/.provenance/experiments/official_assets_verification.json",
+  "assets/pretrained": "assets/tokenizers",
+  "/Users/kkfrank/MAC/work/weichai/code/diesel-fault-kg/assets/pretrained": "assets/tokenizers",
+  ".cache/ner_domain_features": "results/experiments/ner_domain/adaptation/feature_cache",
+  "/Users/kkfrank/MAC/work/weichai/code/diesel-fault-kg/.cache/ner_domain_features": "results/experiments/ner_domain/adaptation/feature_cache",
+  "results/measured_metrics.csv": "results/experiments/measured_metrics.csv",
+  "/Users/kkfrank/MAC/work/weichai/code/diesel-fault-kg/results/measured_metrics.csv": "results/experiments/measured_metrics.csv"
 }

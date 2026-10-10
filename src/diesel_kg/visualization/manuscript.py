@@ -22,7 +22,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
-from diesel_kg.paths import PROJECT_ROOT, source_dependencies
+from diesel_kg.paths import PROJECT_ROOT, source_dependencies, resolve_recorded_path
 
 
 def build(results_dir: Path, output: Path, compile_pdf: bool = False):
@@ -34,10 +34,13 @@ def build(results_dir: Path, output: Path, compile_pdf: bool = False):
     FIG.mkdir(parents=True, exist_ok=True)
     used_files = set()
     for name in ['main.rty', 'maik.rty', 'maik.bst', 'ref.bib',
-                 'figures/framework.png', 'figures/lda_illustration.png']:
+                 'figures/framework.png']:
         source = TEMPLATE / name
         used_files.add(source)
         shutil.copy2(source, TEX / name)
+    source = PROJECT_ROOT / 'data/paper/LDA模型.png'
+    used_files.add(source)
+    shutil.copy2(source, FIG / 'lda_illustration.png')
     template = TEMPLATE / 'main.tex'
     used_files.add(template)
     original = template.read_text(encoding='utf-8-sig')
@@ -115,7 +118,7 @@ def build(results_dir: Path, output: Path, compile_pdf: bool = False):
         ner[variant] = {name: span_metrics(part) for name, part in
                         [('all', pred), ('template', pred[:800]), ('domain', pred[800:])]}
         assert math.isclose(ner[variant]['all']['f1'], summary['test']['exact_span_type']['f1'])
-        checkpoint = EXP / f'ner/{variant}' / Path(summary['checkpoint_path']).name
+        checkpoint = resolve_recorded_path(EXP / f'ner/{variant}' / Path(summary['checkpoint_path']).name)
         assert sha(checkpoint) == summary['checkpoint_sha256']
         used_files.add(checkpoint)
 
@@ -139,7 +142,7 @@ def build(results_dir: Path, output: Path, compile_pdf: bool = False):
     assert int(np.trace(cm)) == re_test['correct']
     assert math.isclose(float(np.mean(2 * np.diag(cm) / (cm.sum(0) + cm.sum(1)))), re_test['macro_f1_all_nine_classes'])
     assert sha(EXP / 're_clean/grouped_training/group_heldout_predictions.jsonl') == re_test['predictions_sha256']
-    checkpoint = EXP / 're_clean/grouped_training/best_model.pt'
+    checkpoint = resolve_recorded_path(EXP / 're_clean/grouped_training/best_model.pt')
     assert sha(checkpoint) == re_summary['checkpoint_sha256']
     used_files.add(checkpoint)
     re_split = load('re_clean/split_manifest.json')

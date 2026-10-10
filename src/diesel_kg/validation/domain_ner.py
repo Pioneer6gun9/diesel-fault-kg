@@ -59,12 +59,14 @@ def main():
     prior = {r['sample_id']: r for r in load_rows(args.primary_predictions)}
     prior_exact = all({key(e) for e in r['predicted_entities']} == {key(e) for e in prior[r['sample_id']]['predicted_entities']} for r in final_predictions['baseline'])
     check('baseline_matches_original_completed_checkpoint_saved_spans', prior_exact)
-    check('classifier_head_sha256', summary['classifier_head_sha256'] == sha256(root/'best_classifier_head.pt'))
-    check('selected_checkpoint_sha256', summary['selected_checkpoint_sha256'] == sha256(root/'domain_adapted_ner_checkpoint.pt'))
+    head_path = resolve_recorded_path(root/'best_classifier_head.pt')
+    checkpoint = resolve_recorded_path(root/'domain_adapted_ner_checkpoint.pt')
+    check('classifier_head_sha256', summary['classifier_head_sha256'] == sha256(head_path))
+    check('selected_checkpoint_sha256', summary['selected_checkpoint_sha256'] == sha256(checkpoint))
     import torch
     base_path = next(resolve_recorded_path(p) for p in protocol['input_sha256'] if p.endswith('.pt'))
     original = torch.load(base_path, map_location='cpu', weights_only=True, mmap=True)
-    selected = torch.load(root/'domain_adapted_ner_checkpoint.pt', map_location='cpu', weights_only=True, mmap=True)
+    selected = torch.load(checkpoint, map_location='cpu', weights_only=True, mmap=True)
     enc = [k for k in original['model_state_dict'] if k.startswith('roberta.')]
     check('all_encoder_state_tensors_bitwise_unchanged', all(torch.equal(original['model_state_dict'][k],selected['model_state_dict'][k]) for k in enc), {'encoder_tensors': len(enc)})
     check('label_mapping_unchanged', original['label2id'] == selected['label2id'])

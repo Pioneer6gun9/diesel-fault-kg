@@ -15,7 +15,7 @@ import time
 ROOT = Path(__file__).resolve().parent
 sys.dont_write_bytecode = True
 sys.path.insert(0, str(ROOT / 'src'))
-from diesel_kg.paths import source_dependencies
+from diesel_kg.paths import source_dependencies, resolve_recorded_path
 from diesel_kg.pipelines.workflow import build_plan, reuse_models, step
 
 
@@ -104,7 +104,7 @@ def execute_plan(plan, output, dry_run=False, prepare=None, mode='inference', re
 
     def fingerprint(path):
         digest = hashlib.sha256()
-        with Path(path).open('rb') as stream:
+        with resolve_recorded_path(path).open('rb') as stream:
             for block in iter(lambda: stream.read(8 << 20), b''):
                 digest.update(block)
         return digest.hexdigest()

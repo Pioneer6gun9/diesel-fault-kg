@@ -113,59 +113,14 @@
       "bytes": 25916,
       "role": "original_paper_reference"
     },
-    "assets/pretrained/bert-base-chinese/config.json": {
-      "sha256": "88af762cfb15fa9ce183c84dcbfdc9d635196ba635dfe81f265fdd21d67f4c4c",
-      "bytes": 624,
-      "role": "pinned_pretrained_resource"
-    },
-    "assets/pretrained/bert-base-chinese/model.safetensors": {
-      "sha256": "3404a1ffd8da507042e8161013ba2a4fc49858b4e3f8fbf5ce5724f94883aec3",
-      "bytes": 411553788,
-      "role": "pinned_pretrained_resource"
-    },
-    "assets/pretrained/bert-base-chinese/tokenizer_config.json": {
-      "sha256": "0f6d13e6f4da6f9e24f22ada6bc3be571123d858d7c0c05a8a7cd55a9c23c2e8",
-      "bytes": 49,
-      "role": "pinned_pretrained_resource"
-    },
-    "assets/pretrained/bert-base-chinese/vocab.txt": {
-      "sha256": "45bbac6b341c319adc98a532532882e91a9cefc0329aa57bac9ae761c27b291c",
-      "bytes": 109540,
-      "role": "pinned_pretrained_resource"
-    },
-    "assets/pretrained/chinese-roberta-wwm-ext/asset_manifest.json": {
-      "sha256": "cc4fc788b2183dca34032397263fa6a2a191813782a5b7d5c397e16d664ac02e",
-      "bytes": 1619,
-      "role": "pinned_pretrained_resource"
-    },
-    "assets/pretrained/chinese-roberta-wwm-ext/config.json": {
-      "sha256": "61609babfbada201546297d62f7f3a642d8fd2f1cefec5571c6cbd1e2e2132d9",
-      "bytes": 689,
-      "role": "pinned_pretrained_resource"
-    },
-    "assets/pretrained/chinese-roberta-wwm-ext/pytorch_model.bin": {
-      "sha256": "1ded5a5a1c7841dee6e47942f7b5bf2bcf6f73ff19197580f852f7f638f86b35",
-      "bytes": 411578458,
-      "role": "pinned_pretrained_resource"
-    },
-    "assets/pretrained/chinese-roberta-wwm-ext/special_tokens_map.json": {
-      "sha256": "303df45a03609e4ead04bc3dc1536d0ab19b5358db685b6f3da123d05ec200e3",
-      "bytes": 112,
-      "role": "pinned_pretrained_resource"
-    },
-    "assets/pretrained/chinese-roberta-wwm-ext/tokenizer_config.json": {
-      "sha256": "61785aeaba176fba6d6489f27dccfd2ddee6aee2af0e590451cab7d8b57e0874",
-      "bytes": 19,
-      "role": "pinned_pretrained_resource"
-    },
-    "assets/pretrained/chinese-roberta-wwm-ext/vocab.txt": {
-      "sha256": "45bbac6b341c319adc98a532532882e91a9cefc0329aa57bac9ae761c27b291c",
-      "bytes": 109540,
-      "role": "pinned_pretrained_resource"
-    },
     "assets/tokenizers/bert-base-chinese/config.json": {
       "sha256": "88af762cfb15fa9ce183c84dcbfdc9d635196ba635dfe81f265fdd21d67f4c4c",
       "bytes": 624,
+      "role": "pinned_pretrained_resource"
+    },
+    "assets/tokenizers/bert-base-chinese/model.safetensors": {
+      "sha256": "3404a1ffd8da507042e8161013ba2a4fc49858b4e3f8fbf5ce5724f94883aec3",
+      "bytes": 411553788,
       "role": "pinned_pretrained_resource"
     },
     "assets/tokenizers/bert-base-chinese/tokenizer_config.json": {
@@ -178,9 +133,24 @@
       "bytes": 109540,
       "role": "pinned_pretrained_resource"
     },
+    "assets/tokenizers/chinese-roberta-wwm-ext/asset_manifest.json": {
+      "sha256": "cc4fc788b2183dca34032397263fa6a2a191813782a5b7d5c397e16d664ac02e",
+      "bytes": 1619,
+      "role": "pinned_pretrained_resource"
+    },
     "assets/tokenizers/chinese-roberta-wwm-ext/config.json": {
       "sha256": "61609babfbada201546297d62f7f3a642d8fd2f1cefec5571c6cbd1e2e2132d9",
       "bytes": 689,
+      "role": "pinned_pretrained_resource"
+    },
+    "assets/tokenizers/chinese-roberta-wwm-ext/pytorch_model.bin": {
+      "sha256": "1ded5a5a1c7841dee6e47942f7b5bf2bcf6f73ff19197580f852f7f638f86b35",
+      "bytes": 411578458,
+      "role": "pinned_pretrained_resource"
+    },
+    "assets/tokenizers/chinese-roberta-wwm-ext/special_tokens_map.json": {
+      "sha256": "303df45a03609e4ead04bc3dc1536d0ab19b5358db685b6f3da123d05ec200e3",
+      "bytes": 112,
       "role": "pinned_pretrained_resource"
     },
     "assets/tokenizers/chinese-roberta-wwm-ext/tokenizer_config.json": {
@@ -221,13 +191,14 @@
       "bytes": 776,
       "sha256": "66b590dfc6ae0e7bb6b81ad51d3f377898d3815d0d7f669c47a69cb5a57b70c1"
     },
-    "data/manuscript/figures/lda_illustration.png": {
-      "bytes": 321199,
-      "sha256": "c32547098a23bc0239a575bbc69f0622efbe93dcda050f21896c36123d76da7d"
-    },
     "data/manuscript/figures/framework.png": {
       "bytes": 1392711,
       "sha256": "372f8a6309ec69587378ce4ef8f5d988949f2f8e35322fab211ad4b14d416ce8"
+    },
+    "assets/tokenizers/bert-base-chinese/asset_manifest.json": {
+      "sha256": "401373898b7adb5114f4363a2616f5e21e847a563eb623ffb8566711eb61b234",
+      "bytes": 1319,
+      "role": "pinned_pretrained_resource"
     }
   }
 }

@@ -29,9 +29,9 @@ DIESEL_KG_PYTHON=/path/to/python3.12 ./setup.sh
 | `data/kg_build/` | 案例语料、NER/RE 数据划分、原算法和原始检查点 |
 | `data/topic_dictionary_entities.jsonl` | 主题分析使用的固定实体词典 |
 | `data/manifest.json` | 固定输入文件的 SHA256 校验清单 |
-| `assets/pretrained/`、`assets/tokenizers/` | 预训练模型、模型配置和词表 |
+| `assets/tokenizers/<模型名>/` | 同一模型的权重、配置、词表和分词器配置 |
 | `results/experiments/` | 默认权重复用所需的模型、训练记录和历史参考结果 |
-| `.cache/ner_domain_features/` | 域适配模型校验使用的特征分片 |
+| `results/experiments/ner_domain/adaptation/feature_cache/` | 域适配模型校验使用的特征分片 |
 
 下载并校验固定版本的公开预训练模型：
 
@@ -56,7 +56,9 @@ data/kg_build/RE/best_re_model/best_re_model.pt
 ./run status
 ```
 
-训练设备自动选择可用的 MPS，否则使用 CPU；也可通过 `--device cpu` 显式指定。复制实验资源时应保留相对目录结构和内部符号链接。
+同一模型的资源统一存放在 `assets/tokenizers/` 的对应模型目录，下载命令直接写入该目录。
+
+训练设备自动选择可用的 MPS，否则使用 CPU；也可通过 `--device cpu` 显式指定。复制实验资源时应保留相对目录结构。
 
 ## 运行
 
@@ -72,7 +74,7 @@ data/kg_build/RE/best_re_model/best_re_model.pt
 
 新运行默认输出到 `results/run/`，也可通过 `--output` 指定 `results/` 下的其他空目录。已有结果不会被直接覆盖；中断后使用相同输出目录和 `--resume` 继续。
 
-默认运行会复用并校验已有权重，运行记录标记为 `recorded_checkpoints`。`--train` 模式的训练与后续评价结果均写入指定输出目录。
+默认运行直接读取并校验已有权重，运行记录标记为 `recorded_checkpoints`，在 `pipeline.json` 中保存权重来源与 SHA256。运行目录只保存所需的训练记录和新的评价结果，权重不另建副本或软链接。`--train` 模式的新权重与后续评价结果均写入指定输出目录。
 
 ## 图表与结果
 
@@ -117,7 +119,7 @@ diesel-fault-kg/
 │   ├── manuscript/              # 论文图表模板与原理图
 │   ├── topic_dictionary_entities.jsonl
 │   └── manifest.json            # 输入校验清单
-├── assets/                      # 预训练模型与词表
+├── assets/tokenizers/           # 按模型统一存放权重、配置与词表
 ├── src/diesel_kg/
 │   ├── data/                    # 数据处理与资源准备
 │   ├── models/                  # 模型定义与加载
@@ -132,8 +134,7 @@ diesel-fault-kg/
 ├── requirements.txt             # 直接依赖
 ├── requirements.lock.txt        # 固定版本依赖
 ├── LICENSE
-├── .venv/                       # 安装时创建的 Python 环境
-└── .cache/                      # 模型特征缓存
+└── .venv/                       # 安装时创建的 Python 环境
 ```
 
 原算法 `EntityExtraction.py` 和 `RelationExtraction.py` 保存在 `data/kg_build/`，统一实现与流程调度位于 `src/diesel_kg/`。

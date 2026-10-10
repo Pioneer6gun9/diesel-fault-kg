@@ -9,7 +9,6 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
-import shutil
 import urllib.request
 
 ASSETS={
@@ -40,7 +39,7 @@ def main():
     proxies={'http':a.proxy,'https':a.proxy} if a.proxy else urllib.request.getproxies()
     opener=urllib.request.build_opener(urllib.request.ProxyHandler(proxies))
     for name,asset in ASSETS.items():
-        directory=a.assets_dir/'pretrained'/name; files=[]
+        directory=a.assets_dir/'tokenizers'/name; files=[]
         for filename,expected in asset['files'].items():
             dest=directory/filename; url=f'https://huggingface.co/{asset["repository"]}/resolve/{asset["revision"]}/{filename}?download=true'
             if dest.exists():
@@ -55,11 +54,6 @@ def main():
                 temporary.replace(dest)
             item={'name':filename,'sha256':expected,'bytes':dest.stat().st_size,'url':url}; files.append(item)
             records.append({'path':str(dest.resolve()),**item})
-            if not a.verify_only and filename.endswith(('.json','.txt')):
-                tokenizer=a.assets_dir/'tokenizers'/name; tokenizer.mkdir(parents=True,exist_ok=True)
-                target=tokenizer/filename
-                if target.exists() and sha(target)!=expected: raise ValueError(f'Tokenizer asset differs: {target}')
-                if not target.exists(): shutil.copy2(dest,target)
         if not a.verify_only:
             manifest=directory/'asset_manifest.json'
             value={'repository':asset['repository'],'revision':asset['revision'],'files':files}

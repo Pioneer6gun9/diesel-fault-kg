@@ -12,6 +12,7 @@ import os
 from pathlib import Path
 import sys
 import time
+from diesel_kg.paths import resolve_recorded_path
 os.environ.setdefault('HF_HUB_OFFLINE','1')
 os.environ.setdefault('TRANSFORMERS_OFFLINE','1')
 os.environ.setdefault('TOKENIZERS_PARALLELISM','false')
@@ -37,8 +38,9 @@ def main():
     verifier = json.loads((args.adaptation/'verification.json').read_text())
     if summary['status'] != 'completed' or verifier['status'] != 'passed':
         raise ValueError('Adapted model must have completed and passed independent verification')
-    checkpoint = args.adaptation/'domain_adapted_ner_checkpoint.pt'
-    head_path = args.adaptation/'best_classifier_head.pt'
+    args.base_checkpoint = resolve_recorded_path(args.base_checkpoint)
+    checkpoint = resolve_recorded_path(args.adaptation/'domain_adapted_ner_checkpoint.pt')
+    head_path = resolve_recorded_path(args.adaptation/'best_classifier_head.pt')
     if file_sha256(args.base_checkpoint) != summary['base_checkpoint_sha256'] or file_sha256(checkpoint) != summary['selected_checkpoint_sha256'] or file_sha256(head_path) != summary['classifier_head_sha256']:
         raise ValueError('Base/head/selected checkpoint SHA differs from completed experiment')
     base = torch.load(args.base_checkpoint, map_location='cpu', weights_only=True, mmap=True)

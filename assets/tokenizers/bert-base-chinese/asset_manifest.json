@@ -1,0 +1,30 @@
+{
+  "repository": "google-bert/bert-base-chinese",
+  "revision": "8f23c25b06e129b6c986331a13d8d025a92cf0ea",
+  "files": [
+    {
+      "name": "config.json",
+      "sha256": "88af762cfb15fa9ce183c84dcbfdc9d635196ba635dfe81f265fdd21d67f4c4c",
+      "bytes": 624,
+      "url": "https://huggingface.co/google-bert/bert-base-chinese/resolve/8f23c25b06e129b6c986331a13d8d025a92cf0ea/config.json?download=true"
+    },
+    {
+      "name": "vocab.txt",
+      "sha256": "45bbac6b341c319adc98a532532882e91a9cefc0329aa57bac9ae761c27b291c",
+      "bytes": 109540,
+      "url": "https://huggingface.co/google-bert/bert-base-chinese/resolve/8f23c25b06e129b6c986331a13d8d025a92cf0ea/vocab.txt?download=true"
+    },
+    {
+      "name": "tokenizer_config.json",
+      "sha256": "0f6d13e6f4da6f9e24f22ada6bc3be571123d858d7c0c05a8a7cd55a9c23c2e8",
+      "bytes": 49,
+      "url": "https://huggingface.co/google-bert/bert-base-chinese/resolve/8f23c25b06e129b6c986331a13d8d025a92cf0ea/tokenizer_config.json?download=true"
+    },
+    {
+      "name": "model.safetensors",
+      "sha256": "3404a1ffd8da507042e8161013ba2a4fc49858b4e3f8fbf5ce5724f94883aec3",
+      "bytes": 411553788,
+      "url": "https://huggingface.co/google-bert/bert-base-chinese/resolve/8f23c25b06e129b6c986331a13d8d025a92cf0ea/model.safetensors?download=true"
+    }
+  ]
+}

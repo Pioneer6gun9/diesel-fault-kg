@@ -4,7 +4,7 @@ Requires completed selected models in the same experiment as the frozen inputs.
 No relation-existence, expert, diagnostic or temporal gold is made.
 """
 from __future__ import annotations
-from diesel_kg.paths import PROJECT_ROOT, resolve_script
+from diesel_kg.paths import PROJECT_ROOT, resolve_script, resolve_recorded_path
 import argparse
 import json
 from pathlib import Path
@@ -26,6 +26,7 @@ def main():
     a=p.parse_args();a.output.mkdir(parents=True,exist_ok=True)
     if a.re_checkpoint is None:
         a.re_checkpoint=a.results_dir/'re_clean/grouped_training/best_model.pt'
+    a.re_checkpoint=resolve_recorded_path(a.re_checkpoint)
     ner=a.results_dir/'ner_domain/adaptation';entities=ner/'corpus_entities.jsonl'
     summary=json.loads(entities.with_suffix('.summary.json').read_text())
     if summary['status']!='completed' or summary['counts']['cases']!=1522:raise ValueError('Complete adapted NER corpus required')
@@ -36,7 +37,7 @@ def main():
     verify=json.loads((ner/'verification.json').read_text())
     if verify['status']!='passed':raise ValueError('Verified adapted NER required')
     cases=a.results_dir/'inputs/cases_all.jsonl';source=a.results_dir/'inputs/original_source/RelationExtraction.py'
-    pretrained=a.assets_dir/'pretrained/bert-base-chinese'
+    pretrained=a.assets_dir/'tokenizers/bert-base-chinese'
     forced=ner/'domain_graph_exclusion_case_ids.json'
     bound=[cases,source,entities,entities.with_suffix('.summary.json'),a.re_checkpoint,forced,
            ner/'summary.json',ner/'verification.json',a.results_dir/'re_clean/grouped_training/execution.json']
