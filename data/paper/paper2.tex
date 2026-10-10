@@ -1,0 +1,280 @@
+\documentclass[conference]{IEEEconf}
+\usepackage{cite}
+% \usepackage{biblatex}  
+% \addbibresource{references.bib}
+\usepackage{graphicx}
+
+\renewcommand{\thetable}{\arabic{table}}
+\input epsf
+\usepackage{graphicx}       
+\usepackage{multirow}
+\usepackage{titlesec}
+\usepackage{balance} 
+\usepackage{stfloats}
+\usepackage{xcolor}
+
+\renewcommand\thesection{\arabic{section}} % arabic numerals for the sections
+
+\renewcommand\thesubsectiondis{\thesection.\arabic{subsection}}% arabic numerals for the subsections
+
+\renewcommand\thesubsubsectiondis{\thesubsectiondis.\arabic{subsubsection}}% arabic numerals for the subsubsections
+
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor IEEEconf}
+\begin{document}
+
+\title{\textbf{\Large
+Semantic-Enhanced Knowledge Graph-Based Fault Propagation Analysis and Evolutionary Pattern Mining for Diesel Engines
+% 基于语义增强知识图谱的柴油发动机故障传播分析与演化模式挖掘
+\\}}
+
+\author{Yonglai Wang$^{1}$, Zhancheng Dou$^{1}$, Changhui Zhai$^{1}$, Yujuan Zhang$^{1}$, Zhuhong Chen$^{2,*}$\\
+	\normalsize $^{1}$State Key Laboratory of Engine and Powertrain System, WeichaiPower Co.Ltd., Weifang, Shandong, 261061, China\\
+    \normalsize $^{2}$College of Information and Electrical Engineering, China Agricultural University, Beijing, China\\
+	\normalsize wangyonglai@weichai.com, douzhancheng@weichai.com, zhaich@weichai.com\\
+    \normalsize zhangyujuan@weichai.com, zhuhongchen@cau.edu.cn\\
+	\normalsize *corresponding author
+}
+%+++++++++++++++++++++++++++++++++++++++++++
+
+% use only for invited papers
+%\specialpapernotice{(Invited Paper)}
+
+% make the title area
+\maketitle
+\begin{abstract}
+To address the limitations of traditional diesel engine fault diagnosis methods in semantic representation, propagation reasoning, and interpretability, this paper proposes a semantic-enhanced fault propagation analysis framework based on a knowledge graph. First, large-scale diesel engine maintenance cases from manuals, engineering textbooks, and maintenance records are collected and preprocessed to construct structured fault datasets. A fault knowledge graph is then established, covering fault phenomena, causes, locations, maintenance strategies, and impact consequences.
+To enhance semantic understanding and propagation analysis, the Latent Dirichlet Allocation (LDA) model is applied to mine latent fault topics, while the Louvain community detection algorithm is used to identify fault propagation modules and structural boundaries. Semantic similarity, co-occurrence frequency, and physical structural relationships are further integrated to construct a directed weighted fault propagation network. Based on this network, propagation path mining, node importance analysis, and fault evolution discovery are performed.
+Experimental results show that the proposed framework improves propagation path completeness, enhances core fault node identification accuracy, reduces root-cause localization time, and strengthens diagnostic interpretability. The study further reveals that diesel engine fault propagation exhibits strong intra-community coupling, hub-node-dominated transmission, and hierarchical evolutionary characteristics, providing an interpretable foundation for intelligent fault diagnosis and predictive maintenance.
+% 针对传统柴油发动机故障诊断方法在语义表达、传播推理与可解释性方面存在的不足，本文提出一种基于知识图谱的语义增强型故障传播分析框架。首先，从维修手册、工程教材及运维记录中收集大规模柴油发动机维修案例并进行预处理，构建结构化故障数据集；进而搭建故障知识图谱，涵盖故障现象、故障原因、故障部位、维修策略及影响后果等核心要素。为提升语义理解与传播分析能力，本文采用潜在狄利克雷分配（LDA） 模型挖掘潜在故障主题，结合Louvain 社区检测算法划分故障传播模块并识别结构边界。进一步融合语义相似度、共现频次与物理结构关联，构建有向加权故障传播网络。依托该网络，开展传播路径挖掘、关键节点重要性分析及故障演化规律挖掘研究。实验结果表明，所提框架能够提升故障传播路径的完备性、提高核心故障节点识别精度、缩短故障根因定位时长，并有效增强诊断过程的可解释性。研究同时发现，柴油发动机故障传播呈现社区内部强耦合、枢纽节点主导传播、层级化演化的典型特征，可为智能故障诊断与预测性维护提供可解释的理论支撑。
+\end{abstract}
+\IEEEoverridecommandlockouts
+\vspace{1.5ex}
+\begin{keywords}
+\itshape Diesel Engine Fault Diagnosis; Knowledge Graph; Semantic Enhancement; Fault Propagation Analysis; LDA Topic Modeling; Community Detection
+\end{keywords}
+% no keywords
+% For peer review papers, you can put extra information on the cover
+% page as needed:
+% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
+%
+% for peerreview papers, inserts a page break and creates the second title.
+% Will be ignored for other modes.
+\IEEEpeerreviewmaketitle
+\section{Introduction}
+Diesel engines are widely used in transportation, agricultural machinery, engineering equipment, ships, and distributed power generation systems due to their advantages of high thermal efficiency, strong power output capability, and excellent operational reliability\cite{mollenhauer2010handbook}. As diesel engines gradually evolve toward high power density, intelligent electronic control, and complex integrated structures, the coupling relationships among their internal subsystems become increasingly complicated. Faults are no longer limited to isolated component failures, but often propagate dynamically through physical structures, functional interactions, and control dependencies, eventually resulting in chain reactions and system-level failures\cite{gao2008fault}. Once fault propagation is not identified and controlled in time, local abnormalities may rapidly evolve into severe failures such as power loss, abnormal emissions, overheating shutdown, or even irreversible engine damage, thereby causing substantial economic losses and operational risks.
+Traditional diesel engine fault diagnosis methods mainly rely on manual maintenance experience, rule-based reasoning, signal threshold analysis, and physical parameter monitoring\cite{peng2012application}. Although these approaches can achieve fault identification under relatively simple conditions, they still exhibit several limitations when dealing with complex fault propagation scenarios\cite{zheng2020fault}. First, conventional methods focus primarily on direct fault symptoms and local component abnormalities, lacking the capability to represent global propagation relationships among faults. Second, the semantic associations hidden in large-scale maintenance texts and engineering cases are difficult to mine effectively, resulting in insufficient utilization of fault knowledge\cite{naryanto2023diesel}. Third, most existing intelligent diagnosis models emphasize classification accuracy while neglecting interpretability and propagation reasoning capability, making it difficult to explain the complete evolutionary process from root causes to fault consequences. Therefore, constructing an interpretable fault propagation analysis framework with semantic understanding capability has become a key issue in intelligent diesel engine maintenance research.
+Knowledge graph technology provides a new solution for fault propagation analysis because of its advantages in structured knowledge representation, semantic association modeling, and reasoning capability\cite{paul2019compact}. By transforming fault entities and relationships into graph structures, knowledge graphs can effectively describe the causal logic and topological correlations among fault elements. Existing studies have applied knowledge graphs in equipment maintenance, fault reasoning, and intelligent question-answering systems. However, most current fault knowledge graphs remain limited to static relational representation and lack semantic enhancement capability for dynamic fault propagation analysis\cite{chen2024information}. In addition, traditional graph structures usually ignore latent semantic coupling relationships hidden in fault texts, making it difficult to characterize the aggregation characteristics and hierarchical evolution behaviors of complex fault propagation.
+To overcome the above limitations, this paper proposes a semantic-enhanced knowledge graph framework for diesel engine fault propagation analysis, and its main contributions are summarized as follows: a standardized diesel engine fault dataset is constructed from authoritative maintenance manuals and engineering cases, along with a domain-oriented fault ontology covering fault phenomena, fault causes, fault locations, maintenance strategies, and impact consequences; the LDA topic model is introduced to mine latent semantic topics from fault texts, enabling the discovery of stable fault semantic patterns and semantic coupling relationships among fault elements; the Louvain community detection algorithm is adopted to partition fault propagation modules, revealing the internal aggregation characteristics and external boundary features of fault propagation networks; a semantic-enhanced directed weighted propagation network is constructed by integrating physical structural correlation, semantic similarity, and co-occurrence frequency, thereby improving the capability of knowledge graphs in representing dynamic fault propagation behaviors; and based on the enhanced propagation network, fault propagation paths, propagation modes, and hierarchical evolution laws are systematically analyzed, with the effectiveness and engineering practicality of the proposed framework comprehensively validated.
+% 柴油发动机凭借热效率高、动力输出强劲、运行可靠性好等优势，广泛应用于交通运输、农业机械、工程装备、船舶及分布式发电领域。随着柴油发动机逐步向高功率密度、智能电控、复杂集成化结构发展，其内部各子系统间的耦合关系日趋复杂。故障不再局限于单一部件的独立失效，而是往往通过物理结构、功能关联与控制依赖关系动态传播，最终引发连锁反应乃至系统级故障。若无法及时识别并抑制故障蔓延，局部异常会迅速恶化为动力缺失、排放超标、过热停机等严重故障，甚至造成发动机不可逆损坏，进而带来重大经济损失与运行安全隐患。
+% 传统柴油发动机故障诊断主要依靠人工维修经验、规则推理、信号阈值分析以及物理参数监测。这类方法虽能在简单工况下实现故障识别，但面对复杂故障传播场景仍存在明显局限：传统方法多聚焦于表面故障征兆与局部部件异常，难以刻画故障之间的全局传播关联；难以有效挖掘海量维修文本与工程案例中隐含的语义关联，造成故障知识利用率偏低；现有智能诊断模型大多追求分类精度，却忽视模型可解释性与传播推理能力，无法完整阐释从故障根源到故障后果的演化全过程。因此，构建具备语义理解能力、可解释的故障传播分析框架，已成为柴油发动机智能维护领域的研究重点。
+% 知识图谱凭借结构化知识表达、语义关联建模与逻辑推理能力，为故障传播分析提供了新的技术途径。知识图谱将故障实体与关联关系转化为图结构，能够清晰刻画故障要素之间的因果逻辑与拓扑关联。目前已有研究将知识图谱应用于设备维护、故障推理及智能问答系统，但现有故障知识图谱大多仅停留在静态关系表达层面，缺乏面向动态故障传播分析的语义增强能力。同时，传统图结构往往忽略故障文本中潜藏的隐性语义耦合关系，难以刻画复杂故障传播的聚集特征与层级演化规律。
+% 针对上述不足，本文提出一种面向柴油发动机故障传播分析的语义增强知识图谱研究框架，并梳理了主要研究贡献：依托权威维修手册与工程案例构建标准化柴油发动机故障数据集，建立涵盖故障现象、故障原因、故障部位、维修策略及影响后果的领域故障本体；引入 LDA 主题模型挖掘故障文本的潜在语义主题，挖掘稳定的故障语义模式与故障要素间的语义耦合关系；采用 Louvain 社团检测算法对故障传播模块进行划分，揭示故障传播网络的内部聚集特性与外部边界特征；融合物理结构关联、语义相似度与共现频次，构建语义增强有向加权传播网络，提升知识图谱对故障动态传播行为的表征能力；基于增强传播网络系统分析故障传播路径、传播模式与层级演化规律，并全面验证所提框架的有效性与工程实用性。
+\section{Data Foundation and Technical Framework}
+% 数据基础与技术框架
+\subsection{Fault Data Sources and Preprocessing}
+% 故障数据来源与预处理
+All fault data adopted in this paper are derived from publicly available and authoritative diesel engine maintenance materials, including typical diesel engine maintenance cases, maintenance manuals of mainstream models, and professional textbooks on diesel engine structure and maintenance. The above materials cover mainstream brands such as Cummins, Weichai, Yuchai and Xichai, and are applicable to typical application scenarios including trucks, excavators, tractors and generator sets, which can fully reflect the occurrence and evolution characteristics of faults in the actual operation of diesel engines. To ensure the consistency and validity of subsequent analysis, standardized preprocessing is performed on the original texts. Invalid information such as special symbols, redundant spaces and page notes is eliminated; abbreviations and aliases of professional terms are unified; semantically meaningless stop words are filtered; and overly long texts are reasonably segmented. On the premise of maintaining the complete correlation of fault phenomena, fault locations, fault causes and maintenance measures, standardized fault cases that meet the model input requirements are constructed. After preprocessing, a total of 1522 valid fault cases are finally obtained. All cases follow a stable three-stage logical structure and can provide high-quality data support for fault propagation path extraction, semantic correlation mining and statistical analysis of fault rules.
+% 本文所使用的故障数据全部来源于公开权威的柴油发动机维修资料，包括柴油机典型维修案例、主流机型维修手册及柴油发动机结构与维修专业教材，上述资料覆盖康明斯、潍柴、玉柴、锡柴等主流品牌，适配货车、挖掘机、拖拉机、发电机组等典型应用场景，能够全面反映柴油发动机在实际运行过程中的故障发生与演化特征。为保证后续分析的一致性与有效性，对原始文本开展标准化预处理，通过剔除特殊符号、冗余空格、页码注释等无效信息，统一专业术语缩写与别名表述，过滤无实际语义的停用词汇，并对过长文本进行合理分段，在保证故障现象、故障部位、故障原因、维修措施完整关联的前提下，形成满足模型输入要求的规范化故障案例。经过预处理后，最终得到1522条有效故障案例，所有案例均具备稳定的三段式逻辑结构，能够为故障传播路径提取、语义关联挖掘与规律统计分析提供高质量数据支撑。
+\subsection{Technical Framework for Fault Propagation Analysis}
+% 故障传播分析技术框架
+The overall technical framework for fault propagation analysis is shown in Figure\ref{fig:flowchart}. Taking the semantics-enhanced knowledge graph as the core carrier, this framework follows a complete technical route including data preprocessing, knowledge modeling, semantic enhancement, network construction, propagation analysis, and engineering application. In the knowledge modeling stage, constrained by the domain ontology, core entities such as fault phenomenon, fault location, fault state, fault cause, maintenance suggestion, engine model, detection method, and impact consequence are extracted. Core relationships such as lead to, be caused by, occur in, affect, contain, and be applicable to are constructed, forming a basic fault knowledge graph that can express the structural correlation and causal logic of faults.
+
+In the semantic enhancement stage, the LDA topic model is adopted to mine the latent semantic topics of fault texts and identify the set of fault patterns with stable co-occurrence characteristics. Meanwhile, community analysis is used to divide highly correlated fault units into aggregated modules, clarifying the internal aggregation characteristics and external boundary features of fault propagation\cite{blei2003latent}\cite{roder2015exploring}. In the propagation network construction stage, the physical structure correlation strength and semantic coupling strength are weighted and fused, and quantifiable propagation weights are assigned to the directed edges in the network, forming a directed weighted propagation network that can truly reflect the possibility and impact degree of fault transmission. In the core analysis stage, full-path traversal, pattern classification, rule extraction, node importance ranking, and influencing factor analysis are carried out based on the propagation network, and finally systematic conclusions that can directly support fault early warning, maintenance optimization, and intelligent diagnosis are formed.
+\begin{figure}[!hbp]
+  \centering
+  \includegraphics[width=1.0\linewidth]{故障分析技术路线图.png}  % 自动适配单栏宽度
+  \caption{Overall technical framework for diesel engine fault propagation analysis based on semantic-enhanced knowledge graph}
+  \label{fig:flowchart}
+\end{figure}
+% 基于语义增强知识图谱的柴油发动机故障传播分析整体技术框架
+% 面向故障传播分析的整体技术框架如图1所示，该框架以语义增强知识图谱为核心载体，遵循数据预处理、知识建模、语义增强、网络构建、传播分析、工程应用的完整技术路线。在知识建模阶段，以领域本体为约束，抽取故障现象、故障部位、故障状态、故障原因、维修建议、发动机型号、检测手段、影响后果等核心实体，构建导致、由… 引起、发生于、影响、包含、适用于等核心关系，形成能够表达故障结构关联与因果逻辑的基础故障知识图谱。
+% 在语义增强阶段，采用 LDA 主题模型挖掘故障文本的潜在语义主题，识别具有稳定共现特征的故障模式集合，同时利用社团分析将高度关联的故障单元划分为聚合模块，明确故障传播的内部聚集特性与外部边界特征。在传播网络构建阶段，将物理结构关联强度与语义耦合强度进行加权融合，赋予网络中有向边可量化的传播权重，形成能够真实反映故障传导可能性与影响程度的有向加权传播网络。在核心分析阶段，基于传播网络开展全路径遍历、模式归类、规律提取、节点重要度排序及影响因素解析，最终形成可直接支撑故障预警、维护优化与智能诊断的系统化结论。
+\section{Construction of Semantic-Enhanced Network}
+% 语义增强网络构建
+\subsection{Construction of Basic Fault Knowledge Graph}
+% 基础故障知识图谱构建
+The basic fault knowledge graph serves as the structural carrier for fault propagation analysis. Its core function is to establish structured associations among fault-related entities, providing a unified framework for the extraction and reasoning of propagation paths. Based on the engineering logic of diesel engine fault diagnosis, this paper constructs a domain ontology covering the entire life cycle of faults, and defines entity types, relationship types and attribute constraints to ensure the standardization and consistency of knowledge representation.
+At the entity level, fault phenomena are regarded as observable external manifestations; fault locations correspond to physical structural carriers; fault states describe component failure modes; fault causes point to failure root causes; maintenance suggestions correspond to disposal strategies. Meanwhile, engine models, detection methods and impact consequences are incorporated to form a complete system of fault knowledge elements.
+
+At the relationship level, this paper retains causal relationships, structural subordinate relationships, functional influence relationships and spatial location relationships, which directly support fault propagation. Among them, causal relationships act as the core skeleton of fault propagation; structural subordinate relationships determine the local scope of propagation; functional influence relationships determine the possibility of cross-component transmission. The above three types of relationships jointly constitute the basic topology of the fault propagation network.
+
+The basic knowledge graph can clearly express static correlations among faults, yet it fails to characterize propagation strength, semantic similarity and module coupling. Therefore, semantic enhancement is required to improve its capability in representing dynamic propagation behaviors.
+% 基础故障知识图谱是故障传播分析的结构载体，其核心作用是建立故障相关实体之间的结构化关联，为传播路径的提取与推理提供统一框架。本文依据柴油发动机故障诊断的工程逻辑，构建覆盖故障全生命周期的领域本体，明确实体类型、关系类型与属性约束，确保知识表达的规范性与一致性。在实体层面，以故障现象作为可观测的外部表现，以故障部位对应物理结构载体，以故障状态描述部件失效形式，以故障原因指向失效根源，以维修建议对应处置策略，同时纳入发动机型号、检测手段与影响后果，形成完整的故障知识要素体系。在关系层面，重点保留对故障传播具有直接支撑作用的因果关系、结构从属关系、功能影响关系与空间位置关系，其中因果关系是故障传播的核心骨架，结构从属关系决定传播的局部范围，功能影响关系决定跨部件传导的可能性，三者共同构成故障传播网络的基础拓扑结构。基础图谱能够清晰表达故障之间的静态关联，但缺乏对传播强度、语义相似性与模块耦合性的刻画，需要通过语义增强提升其对动态传播行为的表达能力。
+\subsection{LDA-based Fault Semantic Topic Mining}
+% 基于 LDA 的故障语义主题挖掘
+To mine the latent semantic correlations between faults and provide a basis for propagation strength calculation, the LDA topic model is adopted for unsupervised topic mining of fault cases. As illustrated in the figure\ref{fig:LDA_Model}, the model is built on term co-occurrence patterns, which can automatically extract latent topics with stable semantics from large-scale unstructured texts. Each topic comprises a group of high-probability keywords and corresponds to a category of fault patterns with similar occurrence mechanisms and evolution characteristics.
+The optimal number of topics is determined via the topic coherence index, as shown in the figure\ref{fig:LDA_Result}, which realizes an optimal balance between semantic cohesion and topic distinguishability of mining results. Ultimately, a set of fault topics highly matched with the main functional systems of diesel engines is acquired, covering faults of the fuel injection and combustion system, hydraulic system, cooling and heat dissipation system, electrical and control system, mechanical wear and sealing system, intake and exhaust system, as well as transmission and steering system respectively.
+Each topic contains typical fault phenomena, fault causes, fault modes, and stable conduction relationships among relevant elements, thereby providing semantic support for fault propagation path classification, propagation strength quantification and propagation rule summarization.
+% 为挖掘故障之间的潜在语义关联，为传播强度计算提供依据，采用 LDA 主题模型对故障案例进行无监督主题挖掘。该模型结构如图所示，以词项共现规律为基础，能够从大规模非结构化文本中自动提取具有稳定语义的潜在主题，每个主题由一组高概率关键词组成，对应一类具有相似发生机理与演化特征的故障模式。通过主题一致性指标确定最优主题数量，如图所示，使提取结果在语义凝聚度与主题区分度之间达到最佳平衡，最终得到与柴油发动机主要功能系统高度对应的故障主题集合，分别对应燃油喷射与燃烧系统、液压系统、冷却与散热系统、电气与控制系统、机械结构磨损与密封系统、进气与排气处理系统、传动与转向系统故障。每个主题内部包含典型故障现象、故障原因与故障模式，以及要素之间稳定的传导关系，为故障传播路径归类、传播强度量化与传播规律提炼提供语义支撑。
+\begin{figure}[!hbp]
+  \centering
+  \includegraphics[width=1.0\linewidth]{paper2/LDA模型.png}  % 自动适配单栏宽度
+  \caption{Illustration of LDA-based topic modeling process for fault case analysis}
+  \label{fig:LDA_Model}
+\end{figure}
+\begin{figure}[!hbp]
+  \centering
+  \includegraphics[width=1.0\linewidth]{paper2/LDA主题数.jpeg}  % 自动适配单栏宽度
+  \caption{Determination of the optimal number of topics via topic coherence scores}
+  \label{fig:LDA_Result}
+\end{figure}
+\subsection{Fault Propagation Module Division Based on Community Analysis}
+% 基于社团分析的故障传播模块划分
+Based on semantic topics, the Louvain community detection algorithm is adopted to partition the modules of the fault propagation network. Following the criterion of modularity maximization, this algorithm iteratively optimizes the network partition structure through local node aggregation, enabling efficient mining of topological communities with high cohesion and low coupling in the network. Taking fault semantic correlation and propagation edge weights as the basis, the algorithm automatically identifies the aggregation characteristics and hierarchical boundaries of fault nodes. Its core objective is to detect fault semantic communities with high internal cohesion and low coupling, and reveal the aggregation attributes and hierarchical boundaries of fault propagation\cite{zhang2012journal}.
+
+As shown in the corresponding figure\ref{fig:Analyze} and figure\ref{fig:Analyze_Hot}, the community partitioning results demonstrate that the fault semantic communities are highly consistent with the physical subsystems of diesel engines. Fault nodes within the same community are closely correlated in function and highly similar in semantics; faults feature low propagation resistance, high occurrence probability and fast spreading speed inside a community. By contrast, fault nodes in different communities show relatively loose correlations. Cross-community fault propagation relies on specific hub nodes for transit, accompanied by higher propagation resistance and lower occurrence probability. The identification of community structure decomposes the complex whole-machine fault propagation network into several interpretable and analyzable sub-networks. It lays a structural foundation for hierarchical fault propagation analysis, and provides a critical basis for distinguishing local propagation from cross-system propagation and identifying core propagation paths.
+% 在语义主题的基础上，采用Louvain社团分析算法对故障传播网络进行模块划分，该算法基于模块度最大化准则，通过局部节点聚合迭代优化网络划分结构，能够高效挖掘网络中高内聚、低耦合的拓扑社团。算法以故障语义关联与传播边权重为依据，自动识别故障节点的聚集特征与层级边界，其核心目标是识别网络内部高内聚、低耦合的故障语义社团，揭示故障传播的聚集特性与层级边界。
+% 如图和图所示，社团划分结果表明，故障语义社团与柴油发动机物理子系统高度吻合，同一社团内部的故障节点在功能上紧密关联，在语义上高度相似，故障在社团内部传导阻力小、概率高、速度快；不同社团之间的故障节点关联相对松散，故障跨社团传播需要特定枢纽节点承担中转功能，传导阻力更大、概率更低。社团结构的识别将复杂的整机故障传播网络分解为若干可解释、可分析的子网络，为分层分级开展故障传播分析提供结构基础，同时为区分局部传播与跨系统传播、识别核心传播通道提供关键依据。
+\begin{figure}[!hbp]
+  \centering
+  \includegraphics[width=1.0\linewidth]{paper2/主题分析热力图.png}  % 自动适配单栏宽度
+  \caption{Semantic interaction strength matrix between fault communities of diesel engine systems}
+  \label{fig:Analyze_Hot}
+\end{figure}
+\begin{figure}[!hbp]
+  \centering
+  \includegraphics[width=1.0\linewidth]{paper2/社团数量.png}  % 自动适配单栏宽度
+  \caption{Comparison of semantic interaction strength distributions between intra-community and inter-community fault propagation}
+  \label{fig:Analyze}
+\end{figure}
+\subsection{Construction of Semantic-Enhanced Knowledge Graph}
+% 增强知识图谱构建
+Supported by the structure of the basic fault knowledge graph and aided by semantic enhancement information, an enhanced fault knowledge graph for fault propagation analysis is constructed by integrating the fault semantic features extracted by the LDA topic model and the module partitioning results obtained from community analysis, as shown in the figure\ref{fig:KG}\cite{paulheim2016knowledge}\cite{chen2024information}. While retaining the basic structure of entities, relationships, and attributes, this graph introduces information at the topic level and community level, extending the traditional triple structure of "entity–relationship–attribute" to a multi-dimensional structured representation of "entity–relationship–attribute–topic–community"\cite{paul2019compact}. This enables the knowledge graph to simultaneously carry physical topological associations, fault semantic associations, and propagation module associations, providing a unified, reasoning-enabled, and computable knowledge carrier for mining fault propagation paths, calculating propagation intensity, and analyzing propagation laws.
+In terms of node enhancement, the fault topic information obtained by the LDA model is attached to the corresponding entity nodes as semantic attributes, so that entities such as fault components, fault phenomena, and fault causes have clear topic attribution and semantic labels. Meanwhile, the community partitioning results are taken as the structural attributes of nodes, so that each fault node has a corresponding subsystem module identifier, which directly reflects the aggregation and hierarchy of fault propagation in the graph.
+In terms of relationship enhancement, a comprehensive propagation weight is constructed by fusing semantic similarity and co-occurrence frequency based on physical correlation strength. The original non-weighted relationships are upgraded to directed relationships with propagation weights, so that the edge weights can directly reflect the possibility and influence degree of fault conduction, providing data support for the subsequent quantitative propagation analysis.
+% 在基础故障知识图谱的结构支撑与语义增强信息的辅助下，融合 LDA 主题模型提取的故障语义特征与社团分析得到的模块划分结果，构建面向故障传播分析的增强型故障知识图谱，如图所示。该图谱在保留原有实体、关系、属性等基础结构的前提下，引入主题层与社团层信息，将传统 “实体 — 关系 — 属性” 的三元组结构扩展为 “实体 — 关系 — 属性 — 主题 — 社团” 的多维结构化表达模式，使知识图谱能够同时承载物理拓扑关联、故障语义关联与传播模块关联，为故障传播路径挖掘、传播强度计算与传播规律分析提供统一、可推理、可计算的知识载体。在节点增强方面，将 LDA 模型获得的故障主题信息作为语义属性附加至对应实体节点，使故障部件、故障现象、故障原因等实体具备明确的主题归属与语义标签，同时将社团划分结果作为节点的结构属性，使每一个故障节点均拥有对应的子系统模块标识，从而在图谱中直观体现故障传播的聚集性与层次性。在关系增强方面，以物理关联强度为基础，融合语义相似度与共现频率构建综合传播权重，将原有无权重关系升级为带传播权重的有向关系，使边权能够直接反映故障传导可能性与影响程度，为后续定量传播分析提供数据支撑。
+\begin{figure}[!hbp]
+  \centering
+  \includegraphics[width=1.0\linewidth]{paper2/增强知识图谱.png}  % 自动适配单栏宽度
+  \caption{Comparison of the basic fault knowledge graph and the semantic-enhanced fault knowledge graph for diesel engine fault propagation analysis}
+  \label{fig:KG}
+\end{figure}
+\section{Fault Propagation Paths and Pattern Analysis}
+%故障传播路径与模式分析
+\subsection{Global Mining of Fault Propagation Paths}
+% 故障传播路径全域挖掘
+Based on the semantics-enhanced propagation network, full-path traversal and multi-hop reasoning are adopted to extract fault propagation paths covering the component level, subsystem level and whole-machine level. Dual statistics of occurrence frequency and propagation weight are conducted for all valid paths, as presented in the Table1. The frequency reflects the occurrence probability of each path in practical cases, while the weight characterizes the propagation intensity and influence degree of the path.
+The statistical results indicate that paths with high frequency and high weight are predominantly distributed within the fuel system, cooling system, intake and exhaust system, as well as electrical control system. Among them, paths related to fuel supply and combustion process possess the highest occurrence frequency and the largest propagation weight, which demonstrates that the health status of the fuel system directly determines the overall risk of fault occurrence and diffusion of the whole diesel engine.
+The stability and repeatability of high-frequency paths verify that fault propagation of diesel engines is not a random process; instead, it is governed by the inherent structural characteristics, operational workflows and material degradation laws, and presents definite predictability and controllability. Through statistics and induction of global propagation paths, typical modes with stable engineering significance can be classified according to topological structure, propagation logic and diffusion pattern, which provides a direct reference for hierarchical fault disposal and the formulation of early warning strategies.
+% 基于语义增强传播网络，通过全路径遍历与多跳推理，可提取覆盖部件级、子系统级与整机级的故障传播路径，对所有有效路径进行出现频次与传播权重双重统计，如表所示，频次反映路径在实际案例中的出现概率，权重反映路径的传导强度与影响程度。统计结果显示，高频高权重路径集中分布于燃油系统、冷却系统、进气排气系统与电气控制系统内部，其中与燃油供给、燃烧过程相关的路径出现频次最高、传播权重最大，表明燃油系统的健康状态直接决定整机故障发生与扩散的整体风险。高频路径的稳定性与重复性证明，柴油发动机故障传播并非随机过程，而是由其固有结构、工作流程与材料劣化规律决定，具备明确的可预测性与可控性。通过对全域路径的统计与归纳，可按照拓扑结构、传导逻辑与扩散形态将其划分为具有稳定工程意义的典型模式，为故障分级处置与预警策略制定提供直接依据。
+\begin{table}[hb]
+  \centering
+  \centerline {Table 1. Typical fault propagation chains of diesel engine}
+  \scriptsize
+  \begin{tabular}{|p{2.9cm}|c|c|l|}
+    \hline
+    \textbf{Propagation Chain} & \textbf{Count} & \textbf{Avg.W} & \textbf{Topic Combination} \\ \hline
+    Fuel anomaly → Incomplete combustion → Power decline & 45 & 0.92 & Fuel→Fuel \\ \hline
+    Cooling failure → Temp.rise → Startup difficulty & 38 & 0.88 & Cooling→Fuel \\ \hline
+    Injector clog → Low efficiency → Abnormal emission & 31 & 0.81 & Fuel→Fuel \\ \hline
+    Oil contamination → Spool stuck → Pressure shortage & 27 & 0.85 & Hydraulic→Hydraulic \\ \hline
+    Noise → Gear wear → Vibration increase & 22 & 0.79 & Mechanical→Mechanical \\ \hline
+    Filter clog → Insufficient intake → High exhaust pressure & 20 & 0.83 & Intake→Exhaust \\ \hline
+    Shift difficulty → Synchronizer wear → Shift shock & 18 & 0.76 & Transmission→Transmission \\ \hline
+    Sensor error → ECU misjudge → Fault alarm & 15 & 0.82 & Electrical→Electrical \\ \hline
+    Thermostat stuck → Temp.anomaly → Thermal risk & 12 & 0.79 & Cooling→Cooling \\ \hline
+    Poor lubrication → Bearing wear → Vibration & 10 & 0.77 & Mechanical→Mechanical \\ \hline
+  \end{tabular}
+  \label{tab:ClassicFaultChain}
+\end{table}
+\subsection{Classification and Characteristic Analysis of Typical Fault Propagation Modes}
+%典型故障传播模式归类与特征分析
+The linear propagation mode is the most fundamental and common form of fault conduction in diesel engines. Its core feature lies in that faults propagate sequentially along a single direction and a single chain, with no branches, convergence or multi-source superposition throughout the process\cite{buldyrev2010catastrophic}. The fault evolution path is clear, highly traceable and easy to troubleshoot\cite{gan2020prognostics}. This type of propagation mostly occurs within a single functional subsystem, usually triggered by the progressive degradation of an individual component, and gradually evolves into observable faults following a fixed causal chain. The starting points of linear propagation paths are mostly vulnerable wearing parts, while the end points correspond to external manifestations related to power performance, fuel economy and emission performance. The entire conduction chain conforms to the operating mechanism of diesel engines and exhibits high stability and predictability.
+The branching propagation mode is manifested as a single fault source node diffusing to multiple downstream nodes simultaneously, forming a one-source and multi-direction tree-like propagation structure\cite{xing2008fault}. The fault influence scope expands rapidly in a short time, with a significantly higher hazard level than linear propagation. This mode is mostly induced by the failure of core functional components or key control nodes\cite{loria2018strict}. Such components participate in multiple functional processes simultaneously and have direct correlations with multiple downstream units; once a fault occurs, multiple conduction branches will be triggered at the same time. The starting points of branching propagation are generally system-level core components. After the fault occurs, it will simultaneously cause abnormalities in power, emission, vibration, temperature and other aspects, leading to complex external manifestations that require comprehensive judgment based on multi-dimensional information\cite{liu2020robust}. As the main form of fault diffusion from local units to multiple modules, branching propagation is a key concern for fault early warning and early intervention.
+The convergent propagation mode belongs to coupled failure of multiple faults. It is characterized by multiple independent fault sources propagating along their respective paths and eventually converging and superposing at the same node, thereby triggering more severe system-level failures\cite{li2021energy}. Convergent propagation presents the highest hazard degree, often resulting in severe faults such as engine failure to start, complete loss of power, and overheat protection shutdown. Its root cause lies in the coexistence of multiple degradation sources that fail to be handled in a timely manner, which jointly induce extreme consequences under specific operating conditions. The formation of convergent propagation paths is closely related to inadequate maintenance, harsh operating conditions, long-term overload operation and other factors. Multiple minor faults evolve gradually inside the system and eventually superpose into irreversible severe failures, which is a critical fault pattern to be avoided in predictive maintenance.
+% 线性传播模式是柴油发动机最基础、最常见的故障传导形式，其核心特征为故障沿单一方向、单一链条依次传导，整个过程无分支、无汇聚、无多源叠加，故障演化路径清晰、可追溯性强、排查难度低。此类传播多发生在单一功能子系统内部，通常由单一部件的渐进式劣化引发，按照固定的因果链路逐步发展为可观测故障。线性传播路径的起点多为易损耗部件，终点多为动力性、经济性、排放性相关的外部表现，整个传导链条符合柴油发动机的工作机理，具备高度稳定性与可预测性。
+% 分支传播模式表现为单一故障源节点同时向多个下游节点扩散，形成一源多向的树状传播结构，故障影响范围在短时间内快速扩大，危害程度显著高于线性传播。此类模式多由核心功能部件或关键控制节点失效引发，该类部件同时参与多个功能流程，与多个下游单元存在直接关联，一旦发生故障会同时触发多条传导支路。分支传播的起点通常为系统级核心部件，故障发生后会同时引发动力、排放、振动、温度等多方面异常，外部表现复杂，需要通过多维度信息进行综合判断。分支传播是故障从局部单元向多模块扩散的主要形式，是故障预警与早期干预的重点关注对象。
+% 汇聚传播模式属于多故障耦合失效，其特征为多个相互独立的故障源分别沿自身路径传导，最终在同一节点汇聚叠加，引发更为严重的系统级失效。汇聚传播的危害程度最高，往往导致发动机无法启动、动力完全丧失、过热保护停机等重度故障，其根源在于多个劣化源同时存在且未被及时处置，在特定工况下共同触发极端后果。汇聚传播路径的形成与维护不到位、工况恶劣、长期过载运行等因素密切相关，多个小故障在系统内部逐步演化，最终叠加形成不可逆转的严重失效，是预测性维护需要重点避免的故障形态。
+\section{Revelation of Fault Propagation Laws}
+% 故障传播耦合机理与演化规律
+As shown in Figure\ref{fig:law}(a), fault propagation presents an obvious feature of strong intra-community coupling and weak inter-community coupling. Fault nodes within the same semantic community are closely correlated with low propagation resistance, and their propagation weights are concentrated in the high-value range. Once a fault occurs, it can propagate rapidly inside the community, expanding from component-level failure to subsystem-level anomaly in a short time. By contrast, the correlation of fault nodes among different communities is weak, and the propagation weight decreases obviously. Faults are difficult to jump across communities directly and have to rely on core hub nodes for propagation. This law is highly consistent with the physical structure of diesel engines. Components within the same subsystem feature close functional coordination and direct structural connection, making faults easy to diffuse internally; different subsystems are functionally independent and interact only through a few key interfaces, leading to higher difficulty and lower probability of cross-system fault propagation. This conclusion provides a clear guideline for fault troubleshooting. When observable fault symptoms occur, the root cause should be traced preferentially within the same community, and then the investigation can be extended to relevant communities step by step, which effectively improves fault location efficiency.
+
+As shown in Figure\ref{fig:law}(b), there exist definite core hub systems in the fault propagation of diesel engines. Among them, the fuel injection and combustion system dominates the entire propagation network, maintains stable semantic coupling and structural correlation with all other subsystems, and undertakes the core functions of fault generation, transit and amplification. As the core link of energy conversion, the operating state of the fuel system directly affects combustion efficiency, power output, exhaust temperature and emission level. Meanwhile, it forms a closed-loop interaction with the intake system, cooling system and control system. Thus, even minor abnormalities in the fuel system can easily spread to other subsystems. In addition to the fuel system, the cooling system and intake-exhaust system serve as secondary key modules. They have moderate coupling with multiple communities and act as critical channels for cross-system fault propagation. The hydraulic system, mechanical system and transmission system are relatively independent; faults mainly propagate inside the systems and exert weak influence on the whole-engine diffusion.
+
+As shown in Figure\ref{fig:law}(c), fault propagation follows a distinct three-level evolutionary law, developing gradually from local to overall scope and from mild to severe degree. The first level is component-level local propagation. Faults only affect a single component or adjacent parts with inconspicuous external manifestations, belonging to early minor abnormalities and providing the optimal time for early warning and disposal. The second level is subsystem-level propagation. Faults spread along fixed paths to the entire functional module and trigger multiple correlated anomalies with obvious observable characteristics. Timely disposal at this level can still prevent further fault diffusion. The third level is whole-engine propagation. Faults diffuse across communities via hub nodes and cause superposition of multi-system anomalies, manifested as comprehensive deterioration of power performance, emission, temperature and vibration, resulting in high disposal difficulty and great economic loss. The three-level evolutionary law provides a theoretical basis for hierarchical fault early warning, response and maintenance. Adopting differentiated disposal strategies at different levels can minimize the hazard caused by faults.
+% 如图中a所示，故障传播具有显著的社团内强耦合、跨社团弱耦合特征，同一语义社团内部的故障节点之间关联紧密、传播阻力小，传播权重集中于高值区间，故障一旦发生可在社团内部快速传导，短时间内由部件级失效扩展为子系统级异常。不同社团之间的故障节点关联较弱，传播权重明显降低，故障难以直接跨社团跳转，必须依赖核心枢纽节点实现传导。该规律与柴油发动机物理结构高度一致，同一子系统内部件功能协同紧密、结构连接直接，故障易在内部扩散；不同子系统之间功能相对独立，仅通过少数关键接口实现交互，因此跨系统传播难度更高、概率更低。这一规律为故障排查提供明确思路，当出现可观测故障现象时，应优先在同一社团内部追溯根源，再逐步扩展至关联社团，可显著提高定位效率。
+% 如图中b所示,柴油发动机故障传播存在明确的核心枢纽系统，其中燃油喷射与燃烧系统在整个传播网络中占据主导地位，与其他所有子系统均存在稳定的语义耦合与结构关联，承担故障起源、中转与放大的核心功能。燃油系统作为能量转换的核心环节，其工作状态直接影响燃烧效率、动力输出、排气温度与排放水平，同时与进气系统、冷却系统、控制系统形成闭环交互，因此燃油系统的微小异常极易扩散至其他子系统。除燃油系统外，冷却系统与进气排气系统为次级关键模块，与多个社团存在中等强度耦合，是故障跨系统传播的重要通道。液压系统、机械系统、传动系统则相对独立，主要在内部完成传播，对整机扩散的影响较弱。
+% 如图中c所示，故障传播遵循清晰的三层级演化规律，由局部到整体、由轻微到严重逐步发展。第一层级为部件级局部传播，故障仅影响单一部件或相邻零件，外部表现不明显，属于早期微小异常，是最佳预警与处置时机。第二层级为子系统级传播，故障沿固定路径扩展至整个功能模块，引发多项关联异常，具备明显可观测特征，此时处置仍可避免故障进一步扩散。第三层级为整机级传播，故障通过枢纽节点跨社团扩散，引发多系统异常叠加，表现为动力、排放、温度、振动全面恶化，处置难度高、经济损失大。三层级规律为故障分级预警、分级响应与分级维护提供直接依据，通过在不同层级采取差异化处置策略，可最大限度降低故障危害。
+\begin{figure}[!hbp]
+  \centering
+  \includegraphics[width=1.0\linewidth]{paper2/传播规律.png}  % 自动适配单栏宽度
+  \caption{Fault propagation laws of diesel engines: strong intra-community coupling, hub system dominance, and three-level progressive evolution}
+  \label{fig:law}
+\end{figure}
+\section{Validation of Effectiveness and Engineering Practicality}
+% 有效性与工程实用性验证
+To verify the effectiveness and engineering practicality of the fault propagation analysis method based on the semantic-enhanced knowledge graph, comparative validation is conducted using standardized fault cases as the test set, from four dimensions: propagation path completeness rate, core node identification accuracy, fault root cause localization efficiency, and diagnostic interpretability\cite{dai2018charging}.
+
+The interpretability score is a quantitative indicator for comprehensively evaluating the capability of the knowledge graph to reveal fault mechanisms. Its core value lies in converting qualitative features of the graph, such as "semantic coverage, path completeness, coupling clarity, and diagnostic accuracy", into quantitative values, providing a basis for objective evaluation of the enhancement effect. In this study, the interpretability score is calculated using a weighted summation model, as shown in the formula\ref{eq:interpretability_score}.
+% 为验证基于语义增强知识图谱的故障传播分析方法的有效性与工程实用性，以规范化故障案例为测试集，从传播路径完整率、核心节点识别准确率、故障根因定位效率与诊断可解释性四个维度开展对比验证。
+% 可解释性得分是综合评估知识图谱对故障机理揭示能力的量化指标，其核心价值在于将图谱的 “语义覆盖、路径完整、耦合清晰、诊断精准” 等定性特征转化为定量数值，为增强效果的客观评估提供依据，本研究采用加权求和模型计算可解释性得分，公式如下：
+\begin{equation}
+S_{\text{IS}} = 0.3 S_{\text{SC}} + 0.25 S_{\text{PC}} + 0.25 S_{\text{CC}}
++  0.2 S_{\text{DA}}
+\label{eq:interpretability_score}
+\end{equation}
+\begin{table}[!hbp]
+\centering
+\centerline{Table 2. Evaluation metrics for knowledge graph}
+\centerline{interpretability in fault propagation analysis}
+\scriptsize
+\begin{tabular}{|p{1.0cm}|p{1.4cm}|p{2.2cm}|p{2.6cm}|}
+\hline
+\textbf{Sub-index} & \textbf{Description} & \textbf{Definition} & \textbf{Scoring logic (0–10)} \\
+\hline
+$S_{\text{SC}}$ (Semantic Coverage) & Coverage of fault mechanisms by semantic nodes & Measures the completeness of semantic nodes covering key diesel engine fault mechanisms & 9–10 pts: covers all core failure links (fuel supply, combustion, cooling, etc.); 5–8 pts: covers partial key links; $<$5 pts: lacks valid semantic nodes \\
+\hline
+$S_{\text{PC}}$ (Path Completeness) & Integrity of failure chains & Measures whether causal paths from physical failure to semantic propagation to fault consequences are complete & 9–10 pts: fully covers “physical failure → semantic propagation → fault consequence”; 5–8 pts: missing partial propagation links; $<$5 pts: only physical-level connections exist \\
+\hline
+$S_{\text{CC}}$ (Coupling Clarity) & Clarity of cross-system semantic coupling & Measures the clarity and traceability of causal coupling relationships between subsystems & 9–10 pts: all cross-system coupling paths (e.g., temp. change → combustion anomaly) clearly marked; 5–8 pts: partial coupling paths missing; $<$5 pts: no cross-system coupling marked \\
+\hline
+$S_{\text{DA}}$ (Diagnostic Accuracy) & Support capability for fault diagnosis & Measures the support of the knowledge graph for root cause localization and fault evolution prediction in practical diagnosis & 9–10 pts: accurately locates root causes and predicts fault diffusion trends; 5–8 pts: locates failure links but cannot predict evolution; $<$5 pts: only displays physical connections \\
+\hline
+\end{tabular}
+\label{tab:interpretability_metrics}
+\end{table}
+As shown in the figure\ref{fig:compare}, the validation results demonstrate that the proposed method can significantly improve the completeness of mined propagation paths, overcoming the problem of path omission caused by the reliance of traditional methods on manual experience and the lack of semantic information. The core node identification results are highly consistent with engineering practice, and the identification accuracy meets the requirements of practical diagnosis. The time required for fault root cause localization is significantly reduced, with a remarkable improvement in localization efficiency. By visualizing the propagation paths and full-chain evolutionary relationships, the complete logic of faults from origin to consequence can be clearly presented, greatly enhancing the interpretability of the diagnostic process and effectively addressing the black-box problem of traditional models.
+% 如图所示，验证结果表明，本文所提出的方法能够显著提升传播路径挖掘的完整性，克服传统方法依赖人工经验、语义信息缺失导致的路径遗漏问题；核心节点识别结果与工程实践高度一致，识别准确率满足实际诊断需求；故障根因定位时间明显缩短，定位效率提升显著；通过可视化传播路径与全链条演化关系，可清晰呈现故障从起源到后果的完整逻辑，大幅提升诊断过程的可解释性，有效解决传统模型黑箱问题。
+\begin{figure}[!hbp]
+  \centering
+  \includegraphics[width=1.0\linewidth]{paper2/知识图谱对比验证.png}  % 自动适配单栏宽度
+  \caption{Performance comparison of fault propagation analysis based on knowledge graph before and after semantic enhancement}
+  \label{fig:compare}
+\end{figure}
+\section{Discussion}
+The proposed semantic-enhanced knowledge graph framework demonstrates strong capability in representing, mining, and reasoning about diesel engine fault propagation behaviors. Compared with traditional diagnosis methods that focus mainly on isolated component failures, the proposed approach establishes a global propagation perspective by integrating structural relationships, semantic correlations, and propagation weights into a unified graph representation. This enables the fault diagnosis process to evolve from static fault identification toward dynamic fault evolution analysis, thereby significantly improving the interpretability and engineering applicability of intelligent diagnosis systems.
+
+One of the most important findings of this research is that diesel engine fault propagation exhibits highly organized structural characteristics rather than random diffusion behavior. Through semantic topic mining and community analysis, the propagation network shows clear subsystem-oriented aggregation patterns. Faults inside the same subsystem possess strong semantic similarity and structural coupling, allowing failures to spread rapidly within local communities. In contrast, cross-community propagation mainly depends on a limited number of hub nodes and key coupling interfaces. This phenomenon indicates that diesel engine fault evolution follows inherent physical and functional constraints. Therefore, identifying key hub nodes and highly coupled propagation channels is essential for predictive maintenance and fault risk control. In practical engineering applications, these hub nodes can be regarded as priority monitoring targets for condition monitoring systems, enabling earlier detection of potential fault diffusion risks.
+
+Another important contribution of this work lies in the introduction of semantic enhancement into fault propagation analysis. Traditional knowledge graphs mainly emphasize explicit structural relationships among entities, while semantic information hidden in maintenance texts is often neglected. By introducing the LDA topic model, latent semantic patterns shared by different fault cases can be effectively mined. As a result, fault propagation analysis is no longer restricted to direct physical connections, but can additionally capture implicit semantic coupling relationships among components, operating states, and fault mechanisms. This enhancement significantly improves the completeness of propagation path mining and provides stronger support for multi-hop reasoning and fault evolution prediction.
+
+The community analysis results further reveal that diesel engine fault propagation follows hierarchical evolutionary characteristics. Faults generally evolve from local component-level abnormalities to subsystem-level failures and eventually to whole-engine system failures. Such hierarchical evolution demonstrates that early-stage minor faults contain valuable warning information before severe system-level failures occur. Therefore, combining propagation path analysis with real-time monitoring data may provide a feasible approach for hierarchical fault early warning. In future intelligent maintenance systems, different warning thresholds and maintenance strategies can be dynamically assigned according to the propagation stage and community importance of faults, thereby reducing maintenance cost and preventing catastrophic failures.
+
+Although the proposed framework achieves promising results, several limitations still exist. First, the fault datasets used in this study are mainly collected from maintenance manuals and engineering cases. Although the dataset covers multiple mainstream diesel engine brands and application scenarios, the diversity and real-time characteristics of industrial operating data remain insufficient. Second, the propagation weights are mainly determined based on semantic similarity, co-occurrence frequency, and structural correlations. Real operating environments, load conditions, temperature variations, and maintenance histories are not fully incorporated into the weighting mechanism. Third, the current framework mainly focuses on static offline analysis and lacks dynamic temporal evolution modeling capability. In practical industrial scenarios, fault propagation behaviors may vary significantly under different operating conditions and time sequences.
+
+Future research can be conducted in several directions. First, multi-source heterogeneous industrial data such as sensor streams, vibration signals, maintenance logs, and operational records can be integrated to improve the real-time perception capability of the propagation network. Second, graph neural networks and large language models can be introduced to enhance semantic reasoning capability and adaptive propagation prediction performance. Third, temporal knowledge graph technology can be incorporated to model dynamic fault evolution processes under varying operating conditions. Finally, the proposed framework can be combined with digital twin systems to establish real-time fault propagation simulation and intelligent maintenance decision-making platforms for complex diesel engine systems.
+% 本文所提出的语义增强知识图谱框架，在柴油发动机故障传播行为的表征、挖掘与推理方面展现出优异能力。传统诊断方法大多孤立关注单个部件失效问题，而本文方法将结构关联、语义相关性与传播权重融合至统一图表达中，建立了全局化的故障传播视角。这使得故障诊断从静态故障识别升级为动态故障演化分析，显著提升了智能诊断系统的可解释性与工程适用性。
+% 本研究最重要的发现之一是：柴油发动机故障传播并非随机扩散，而是呈现高度结构化的组织特征。通过语义主题挖掘与社团分析可知，故障传播网络呈现以子系统为导向的清晰聚集规律。同一子系统内部故障具有强语义相似性与结构耦合性，故障易在局部社团内快速扩散；而跨社团传播主要依赖少量枢纽节点与关键耦合接口。该现象表明，柴油发动机故障演化受固有物理结构与功能约束支配。因此，识别关键枢纽节点与高耦合传播通路，对预测性维护与故障风险管控至关重要。在工程实际中，可将这类枢纽节点作为状态监测系统的重点监测对象，实现对潜在故障扩散风险的提前感知。
+% 本文另一项重要研究贡献，是将语义增强机制引入故障传播分析。传统知识图谱多侧重于实体间显性结构关系，往往忽略维修文本中蕴含的隐性语义信息。通过引入 LDA 主题模型，能够有效挖掘不同故障案例间隐含的共性语义模式。由此，故障传播分析不再局限于直观的物理连接，还可捕捉部件、运行状态与故障机理之间隐含的语义耦合关系。该语义增强大幅提升了传播路径挖掘的完备性，为多跳推理与故障演化预测提供了更强支撑。
+% 社团分析结果进一步表明，柴油发动机故障传播具有层级演化特征：故障通常从局部部件级异常逐步发展为子系统级失效，最终演变为整机系统级故障。这种层级演化规律说明，在严重系统级故障爆发前，早期轻微故障中蕴含着宝贵的预警信息。因此，将传播路径分析与实时监测数据相结合，可为故障分级预警提供可行思路。在未来智能维护系统中，可依据故障所处传播阶段与社团重要度，动态配置差异化预警阈值与维修策略，从而降低维护成本、防范灾难性故障发生。
+% 尽管本文框架取得了良好研究效果，但仍存在若干局限性。首先，研究所用故障数据集主要来源于维修手册与工程案例，虽覆盖多款主流柴油发动机品牌与应用场景，但工业现场运行数据的多样性与实时性仍有待补充。其次，传播权重主要由语义相似度、共现频次及结构关联确定，尚未充分纳入实际工况、负载条件、温度波动与维修历史等影响因素。第三，当前框架以静态离线分析为主，缺乏面向时序变化的动态演化建模能力；而在真实工业场景中，不同工况与时序条件下的故障传播行为差异显著。
+% 未来可从多个方向开展拓展研究：第一，融合传感器数据流、振动信号、维修日志、运行记录等多源异构工业数据，提升传播网络的实时感知能力；第二，引入图神经网络与大语言模型，进一步增强语义推理能力与自适应传播预测性能；第三，结合时序知识图谱技术，实现变工况下故障动态演化过程建模；最后，将本文框架与数字孪生系统结合，面向复杂柴油发动机系统搭建故障传播实时仿真与智能维护决策平台。
+\section{Conclusion}
+This paper proposes a semantic-enhanced knowledge graph framework for diesel engine fault propagation analysis. By integrating structured fault knowledge representation, semantic topic mining, community structure analysis, and propagation network modeling, the proposed method realizes unified representation and systematic analysis of diesel engine fault propagation behaviors. First, standardized fault datasets are constructed from authoritative maintenance materials and engineering cases, and a domain-oriented fault ontology covering fault phenomena, fault causes, fault locations, maintenance strategies, and impact consequences is established. Then, the LDA topic model is employed to mine latent semantic topics and identify stable fault semantic patterns, while the Louvain community detection algorithm is introduced to reveal the aggregation characteristics and hierarchical boundaries of fault propagation modules. Furthermore, semantic similarity, co-occurrence frequency, and physical structural correlations are fused to construct a directed weighted semantic-enhanced propagation network capable of representing dynamic fault diffusion processes.Based on the enhanced propagation network, global fault propagation paths are systematically mined and typical propagation modes including linear propagation, branching propagation, and convergent propagation are analyzed. The experimental results demonstrate that the proposed method can effectively improve propagation path completeness, enhance the accuracy of core node identification, shorten fault root cause localization time, and significantly improve diagnostic interpretability. The research further reveals several important propagation laws of diesel engine faults. Specifically, fault propagation exhibits strong intra-community coupling and weak inter-community coupling characteristics; the fuel injection and combustion system acts as the dominant hub subsystem in the entire propagation network; and fault evolution follows a clear hierarchical process from component-level local propagation to subsystem-level expansion and finally to whole-engine diffusion.Compared with traditional fault diagnosis methods, the proposed framework not only strengthens the capability of representing complex propagation relationships, but also provides better interpretability and reasoning capability for intelligent diagnosis systems. By combining semantic information with physical structural relationships, the proposed method effectively overcomes the limitations of conventional knowledge graphs in describing dynamic fault evolution behaviors. The framework therefore provides an important technical foundation for intelligent maintenance, predictive diagnosis, and fault early warning of diesel engines.Although promising results are achieved, further improvements are still necessary in terms of dynamic temporal modeling, real-time industrial data integration, and adaptive propagation prediction. Future work will focus on integrating multi-source heterogeneous sensor data, introducing graph neural networks and large language models for advanced semantic reasoning, and constructing temporal propagation models for real-time fault evolution analysis. In addition, the proposed framework can be extended to digital twin-based intelligent maintenance systems to realize online monitoring, dynamic risk prediction, and autonomous maintenance decision-making for complex diesel engine equipment.In summary, this study provides a systematic and interpretable solution for diesel engine fault propagation analysis from the perspective of semantic-enhanced knowledge graphs, and offers both theoretical significance and engineering value for the development of intelligent fault diagnosis technologies in modern industrial equipment systems.
+% 本文提出一种面向柴油发动机故障传播分析的语义增强知识图谱框架。该方法融合结构化故障知识表达、语义主题挖掘、社团结构分析与传播网络建模，实现了柴油发动机故障传播行为的统一表征与系统化分析。
+% 首先，依托权威维修资料与工程案例构建标准化故障数据集，建立涵盖故障现象、故障原因、故障部位、维修策略及影响后果的领域故障本体。随后，采用 LDA 主题模型挖掘潜在语义主题，识别稳定的故障语义模式；引入 Louvain 社团检测算法，揭示故障传播模块的聚集特征与层级边界。进一步融合语义相似度、共现频次与物理结构关联关系，构建有向加权的语义增强传播网络，实现对故障动态扩散过程的有效表征。
+% 依托增强传播网络，系统挖掘全域故障传播路径，并对线性传播、分支传播、汇聚传播三类典型传播模式展开分析。实验结果表明：所提方法能够有效提升传播路径挖掘完整度、提高核心节点识别准确率、缩短故障根因定位时间，并显著提升诊断结果的可解释性。
+% 研究进一步揭示了柴油发动机故障传播的若干重要规律：故障传播呈现社团内强耦合、跨社团弱耦合特征；燃油喷射与燃烧系统在整个传播网络中占据主导枢纽地位；故障演化遵循部件级局部传播 — 子系统级扩散 — 整机级蔓延的清晰层级演进过程。
+% 相较于传统故障诊断方法，本文框架不仅强化了复杂故障传播关系的表征能力，还为智能诊断系统提供了更优的可解释性与推理能力。通过将语义信息与物理结构关系相结合，有效弥补了传统知识图谱在刻画故障动态演化行为方面的不足，可为柴油发动机智能维护、预测诊断与故障预警奠定重要技术基础。
+% 尽管本文已取得较好成果，但在动态时序建模、工业实时数据融合与自适应传播预测方面仍有优化空间。未来研究将重点融合多源异构传感器数据，引入图神经网络与大语言模型开展高阶语义推理，构建时序传播模型以实现故障演化实时分析。此外，可将该框架拓展至基于数字孪生的智能维护系统，实现复杂柴油发动机装备的在线监测、动态风险预测与自主维修决策。
+% 综上，本研究从语义增强知识图谱视角，为柴油发动机故障传播分析提供了一套系统化、可解释的解决方案，对现代工业装备智能故障诊断技术的发展具有重要理论意义与工程应用价值。
+\section*{Acknowledgment}
+This work was supported by the Open Fund of National Key Laboratory of Internal Combustion Engine and Power Systems (Grant No. skleps-sq-2024-170).
+\bibliographystyle{ieeetr}
+\bibliography{ref}
+
+\balance
+
+\end{document}

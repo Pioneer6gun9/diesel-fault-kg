@@ -1,0 +1,9 @@
+{
+  "data_dir": "data/kg_build",
+  "paper_source": "data/paper/paper2.tex",
+  "topic_entities": "data/topic_dictionary_entities.jsonl",
+  "assets_dir": "assets",
+  "training_device": "auto",
+  "inference_device": "cpu",
+  "results_dir": "results/experiments"
+}

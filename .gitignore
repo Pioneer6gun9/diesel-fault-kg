@@ -1,0 +1,20 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.DS_Store
+.cache/
+results/
+
+# Large model weights are local runtime resources.
+*.pt
+*.pth
+*.bin
+*.safetensors
+
+# Local secrets and transient editor files.
+.env
+.env.*
+!.env.example
+*.swp
+*.swo

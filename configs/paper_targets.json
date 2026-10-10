@@ -1,0 +1,652 @@
+{
+  "schema_version": 1,
+  "created_date_client": "2026-10-07",
+  "role": "paper_readout_targets_and_evidence_audit_only",
+  "do_not_use_as_computed_results": true,
+  "paper_title": "Semantic-Enhanced Knowledge Graph-Based Fault Propagation Analysis and Evolutionary Pattern Mining for Diesel Engines",
+  "sources": {
+    "paper2.tex": {
+      "path": "data/paper/paper2.tex",
+      "sha256": "c06629bd27c1ced7884ab514e6db6e62eeae39e7accfa9acf214188080de74a3"
+    },
+    "LDA模型.png": {
+      "path": "data/paper/LDA模型.png",
+      "sha256": "c32547098a23bc0239a575bbc69f0622efbe93dcda050f21896c36123d76da7d"
+    },
+    "LDA主题数.jpeg": {
+      "path": "data/paper/LDA主题数.jpeg",
+      "sha256": "f048932ca55bad5ac510d534bf19df1a863b81c70260b52e64d54fa129126c75"
+    },
+    "主题分析热力图.png": {
+      "path": "data/paper/主题分析热力图.png",
+      "sha256": "0f0e4f79445a4285b6537c793e3c80c7f473753b6cb4a58ec370ad895b62d228"
+    },
+    "社团数量.png": {
+      "path": "data/paper/社团数量.png",
+      "sha256": "4a0842760b601adb5cfa0c0813e9ad5e7cacb0eb683a386db5c167fce0099cdf"
+    },
+    "增强知识图谱.png": {
+      "path": "data/paper/增强知识图谱.png",
+      "sha256": "3c42006ad058fad1670b22afc606243f704b529014790cc1e57e2f24c0876545"
+    },
+    "传播规律.png": {
+      "path": "data/paper/传播规律.png",
+      "sha256": "c93d8acd3a4b3bd598515437187976518b320deb3681fe23c10b0a67f864784c"
+    },
+    "知识图谱对比验证.png": {
+      "path": "data/paper/知识图谱对比验证.png",
+      "sha256": "55164b5d2d91184bd77965c956e56e35fcfc6816b28f3b9374c0e4ad4d3f7932"
+    }
+  },
+  "figures": {
+    "2": {
+      "source_file": "LDA模型.png",
+      "tex_line": 113,
+      "role": "generic_LDA_illustration_not_a_diesel_experiment",
+      "numeric_axis_coordinates": [],
+      "illustrative_topic_word_probabilities": {
+        "gene": 0.04,
+        "dna": 0.02,
+        "genetic": 0.01,
+        "life": 0.02,
+        "evolve": 0.01,
+        "organism": 0.01,
+        "brain": 0.04,
+        "neuron": 0.02,
+        "nerve": 0.01,
+        "data": 0.02,
+        "number": 0.02,
+        "computer": 0.01
+      },
+      "evidence_kind": "visible_illustrative_text",
+      "limitation": "Generic genetics/science documents shown; these probabilities are not diesel corpus model outputs."
+    },
+    "3": {
+      "source_file": "LDA主题数.jpeg",
+      "tex_line": 119,
+      "role": "paper_claimed_topic_coherence_curve",
+      "x_axis": "Candidate Topic Number",
+      "y_axis": "Coherence Score",
+      "points": [
+        {
+          "k": 3,
+          "coherence": 0.62
+        },
+        {
+          "k": 4,
+          "coherence": 0.65
+        },
+        {
+          "k": 5,
+          "coherence": 0.7
+        },
+        {
+          "k": 6,
+          "coherence": 0.75
+        },
+        {
+          "k": 7,
+          "coherence": 0.78
+        },
+        {
+          "k": 8,
+          "coherence": 0.77
+        },
+        {
+          "k": 9,
+          "coherence": 0.74
+        },
+        {
+          "k": 10,
+          "coherence": 0.72
+        },
+        {
+          "k": 11,
+          "coherence": 0.7
+        },
+        {
+          "k": 12,
+          "coherence": 0.68
+        }
+      ],
+      "annotation": {
+        "optimal_topic_number": 7,
+        "coherence": 0.78
+      },
+      "evidence_kind": "annotation_and_raster_digitization",
+      "digitization_tolerance_y": 0.0025,
+      "limitation": "Only K=7, coherence=0.78 are explicitly annotated; other points were read from raster axes. The coherence definition, tokenization and original model are unavailable."
+    },
+    "4": {
+      "source_file": "主题分析热力图.png",
+      "tex_line": 132,
+      "role": "paper_claimed_community_interaction_matrix",
+      "row_axis": "Source Community",
+      "column_axis": "Target Community",
+      "community_order": [
+        "Fuel Injection & Combustion",
+        "Hydraulic System",
+        "Cooling & Heat Dissipation",
+        "Electrical & Control",
+        "Mechanical Wear & Sealing",
+        "Intake & Exhaust Treatment",
+        "Transmission & Steering"
+      ],
+      "matrix": [
+        [
+          1.0,
+          0.05,
+          0.05,
+          0.05,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.05,
+          0.32,
+          0.05,
+          0.05,
+          0.23,
+          0.05,
+          0.21
+        ],
+        [
+          0.27,
+          0.05,
+          0.34,
+          0.05,
+          0.23,
+          0.05,
+          0.05
+        ],
+        [
+          0.26,
+          0.22,
+          0.05,
+          0.33,
+          0.05,
+          0.05,
+          0.05
+        ],
+        [
+          0.24,
+          0.05,
+          0.05,
+          0.05,
+          0.3,
+          0.05,
+          0.05
+        ],
+        [
+          0.52,
+          0.05,
+          0.05,
+          0.05,
+          0.05,
+          0.29,
+          0.05
+        ],
+        [
+          0.25,
+          0.05,
+          0.05,
+          0.05,
+          0.05,
+          0.05,
+          0.29
+        ]
+      ],
+      "evidence_kind": "visible_cell_annotations",
+      "value_precision": 0.01,
+      "limitation": "No recipe for normalized interaction strength or community assignments is available; many cells equal 0.05 and the asymmetric direction must be preserved."
+    },
+    "5": {
+      "source_file": "社团数量.png",
+      "tex_line": 138,
+      "role": "paper_claimed_edge_weight_distributions",
+      "x_axis": "Semantic Interaction Strength (Edge Weight)",
+      "y_axis": "Number of Edges (1/20 Scaling)",
+      "annotated_means": {
+        "intra_community": 0.84,
+        "inter_community": 0.64
+      },
+      "evidence_kind": "visible_annotations_and_optional_raster_digitization",
+      "approximate_histogram": {
+        "bin_edges": [
+          0.5,
+          0.529412,
+          0.558824,
+          0.588235,
+          0.617647,
+          0.647059,
+          0.676471,
+          0.705882,
+          0.735294,
+          0.764706,
+          0.794118,
+          0.823529,
+          0.852941,
+          0.882353,
+          0.911765,
+          0.941176,
+          0.970588,
+          1.0
+        ],
+        "inter_scaled_heights": [
+          0,
+          1,
+          1,
+          1,
+          2,
+          1,
+          3,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "intra_visible_scaled_heights": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          2,
+          0,
+          2,
+          2,
+          1,
+          1,
+          0,
+          0
+        ],
+        "height_tolerance": 0.1,
+        "bin_edge_tolerance": 0.002,
+        "notes": [
+          "Visible bar heights only; overlap may hide bars.",
+          "1/20 Scaling is an axis label, not evidence of the actual sample size.",
+          "KDE bandwidth, underlying edge weights, sample sizes and exact density ordinates are missing."
+        ]
+      },
+      "approximate_density_peaks": [
+        {
+          "group": "intra",
+          "x": 0.874,
+          "y": 6.21
+        },
+        {
+          "group": "inter",
+          "x": 0.65,
+          "y": 5.25
+        }
+      ],
+      "density_digitization_tolerance": {
+        "x": 0.01,
+        "y": 0.1
+      }
+    },
+    "6": {
+      "source_file": "增强知识图谱.png",
+      "tex_line": 150,
+      "role": "before_after_graph_illustration",
+      "numeric_axis_coordinates": [],
+      "visible_categories": [
+        "physical entities and basic faults",
+        "physical + semantic + failure mechanism chains"
+      ],
+      "evidence_kind": "diagram_only",
+      "limitation": "No graph node IDs, adjacency, edge weights, reproducible layout seed or case subset is supplied. Visual circles are not usable as a graph dataset or a quantitative result."
+    },
+    "7": {
+      "source_file": "传播规律.png",
+      "tex_line": 202,
+      "role": "mixed_illustration_and_paper_claimed_numeric_annotations",
+      "panels": {
+        "a": {
+          "annotated_mean_weights": {
+            "intra_community": 0.72,
+            "inter_community": 0.19
+          },
+          "histogram_x_axis": "Edge Weight",
+          "histogram_y_axis": "Proportion",
+          "evidence_kind": "visible_annotations",
+          "limitation": "Histograms lack raw arrays; reported means differ from Figure 5 without a stated sampling/normalization explanation."
+        },
+        "b": {
+          "metric_label": "Coupling Strength",
+          "annotated_bars": [
+            {
+              "system": "Fuel",
+              "value": 1.0
+            },
+            {
+              "system": "Cooling",
+              "value": 0.72
+            },
+            {
+              "system": "Intake",
+              "value": 0.68
+            },
+            {
+              "system": "Control",
+              "value": 0.63
+            },
+            {
+              "system": "Exhaust",
+              "value": 0.55
+            },
+            {
+              "system": "Electrical",
+              "value": 0.32
+            },
+            {
+              "system": "Hydraulic",
+              "value": 0.28
+            },
+            {
+              "system": "Mechanical & Transmission",
+              "value": 0.27
+            }
+          ],
+          "evidence_kind": "visible_bar_annotations",
+          "limitation": "Normalization and system-node assignment are missing. Eight system bins differ from the seven LDA/community labels."
+        },
+        "c": {
+          "numeric_axis_coordinates": [],
+          "levels": [
+            {
+              "level": 1,
+              "scope": "Component",
+              "speed": "Slow",
+              "difficulty": "Low"
+            },
+            {
+              "level": 2,
+              "scope": "Subsystem",
+              "speed": "Medium",
+              "difficulty": "Medium"
+            },
+            {
+              "level": 3,
+              "scope": "Engine",
+              "speed": "Fast",
+              "difficulty": "High"
+            }
+          ],
+          "evidence_kind": "conceptual_schematics_and_qualitative_table",
+          "limitation": "Time and Indicator sketches have no numbered axis, units or observations; they cannot support quantitative temporal validation."
+        }
+      }
+    },
+    "8": {
+      "source_file": "知识图谱对比验证.png",
+      "tex_line": 242,
+      "role": "paper_claimed_before_after_comparison",
+      "x_categories": [
+        "Number of Nodes",
+        "Number of Edges",
+        "Number of Failure Paths",
+        "Interpretability Score"
+      ],
+      "y_axis": "Quantity / Score",
+      "before": [
+        12.0,
+        18.0,
+        5.0,
+        6.2
+      ],
+      "after": [
+        28.0,
+        45.0,
+        15.0,
+        9.1
+      ],
+      "evidence_kind": "visible_bar_annotations",
+      "metric_limitations": {
+        "Number of Nodes": "Graph subset and node inclusion policy are unspecified.",
+        "Number of Edges": "Graph subset and edge inclusion policy are unspecified.",
+        "Number of Failure Paths": "Valid-path definition, hop bound, case support and ground truth are missing; path count is not a completeness rate.",
+        "Interpretability Score": "Individual SSC/SPC/SCC/SDA scores, raters and scoring records are absent."
+      },
+      "not_shown": [
+        "core_node_identification_accuracy",
+        "root_cause_localization_accuracy",
+        "root_cause_localization_time"
+      ],
+      "limitation": "Targets are read from the paper image and must never be emitted as measured experiment outputs."
+    }
+  },
+  "tables": {
+    "1": {
+      "tex_lines": [
+        169,
+        178
+      ],
+      "evidence_kind": "literal_latex_table",
+      "rows": [
+        {
+          "chain": "Fuel anomaly → Incomplete combustion → Power decline",
+          "count": 45,
+          "average_weight": 0.92,
+          "topic_combination": "Fuel→Fuel"
+        },
+        {
+          "chain": "Cooling failure → Temp.rise → Startup difficulty",
+          "count": 38,
+          "average_weight": 0.88,
+          "topic_combination": "Cooling→Fuel"
+        },
+        {
+          "chain": "Injector clog → Low efficiency → Abnormal emission",
+          "count": 31,
+          "average_weight": 0.81,
+          "topic_combination": "Fuel→Fuel"
+        },
+        {
+          "chain": "Oil contamination → Spool stuck → Pressure shortage",
+          "count": 27,
+          "average_weight": 0.85,
+          "topic_combination": "Hydraulic→Hydraulic"
+        },
+        {
+          "chain": "Noise → Gear wear → Vibration increase",
+          "count": 22,
+          "average_weight": 0.79,
+          "topic_combination": "Mechanical→Mechanical"
+        },
+        {
+          "chain": "Filter clog → Insufficient intake → High exhaust pressure",
+          "count": 20,
+          "average_weight": 0.83,
+          "topic_combination": "Intake→Exhaust"
+        },
+        {
+          "chain": "Shift difficulty → Synchronizer wear → Shift shock",
+          "count": 18,
+          "average_weight": 0.76,
+          "topic_combination": "Transmission→Transmission"
+        },
+        {
+          "chain": "Sensor error → ECU misjudge → Fault alarm",
+          "count": 15,
+          "average_weight": 0.82,
+          "topic_combination": "Electrical→Electrical"
+        },
+        {
+          "chain": "Thermostat stuck → Temp.anomaly → Thermal risk",
+          "count": 12,
+          "average_weight": 0.79,
+          "topic_combination": "Cooling→Cooling"
+        },
+        {
+          "chain": "Poor lubrication → Bearing wear → Vibration",
+          "count": 10,
+          "average_weight": 0.77,
+          "topic_combination": "Mechanical→Mechanical"
+        }
+      ],
+      "missing": [
+        "exact canonical node identities",
+        "case IDs supporting every chain",
+        "counting rule",
+        "edge/path weight computation",
+        "causal direction gold labels"
+      ],
+      "direction_review_examples": [
+        "Noise → Gear wear",
+        "Shift difficulty → Synchronizer wear"
+      ]
+    },
+    "2": {
+      "tex_lines": [
+        213,
+        233
+      ],
+      "score_range": [
+        0,
+        10
+      ],
+      "formula_weights": {
+        "SSC": 0.3,
+        "SPC": 0.25,
+        "SCC": 0.25,
+        "SDA": 0.2
+      },
+      "formula": "SIS = 0.3 SSC + 0.25 SPC + 0.25 SCC + 0.2 SDA",
+      "missing": [
+        "per_component_score_values",
+        "scoring_records",
+        "raters",
+        "independent_gold_labels",
+        "inter_rater_agreement",
+        "diagnostic_accuracy_denominator"
+      ]
+    }
+  },
+  "cross_figure_ambiguities": [
+    {
+      "figures": [
+        5,
+        "7a"
+      ],
+      "issue": "Annotated intra/inter means differ (0.84/0.64 versus 0.72/0.19) without stated sampling or normalization differences."
+    },
+    {
+      "figures": [
+        4,
+        "7b"
+      ],
+      "issue": "Community/topic matrix uses seven systems while coupling bars use eight system bins; Control and Electrical are split, and mechanical/transmission mapping differs."
+    },
+    {
+      "figures": [
+        8
+      ],
+      "issue": "Figure 8 contains graph size/path counts and a score, while section 6 discusses accuracy and localization time without showing those observations."
+    }
+  ],
+  "data_audit": {
+    "corpus": {
+      "path": "data/kg_build/案例语料.txt",
+      "case_rows": 1522,
+      "unique_body_after_removing_case_id": 1360,
+      "extra_duplicate_occurrences": 162,
+      "normalized_deduplication": "NFKC and remove whitespace, after removing leading 案例<number> label",
+      "source_independent_holdout_available": false,
+      "limitations": [
+        "No source manual/page/brand provenance for each case is supplied.",
+        "Identical body deduplication does not remove paraphrase/template overlap."
+      ]
+    },
+    "RE": {
+      "splits": {
+        "train": {
+          "rows": 800,
+          "unique_text": 794,
+          "unique_records": 794
+        },
+        "dev": {
+          "rows": 200,
+          "unique_text": 200,
+          "unique_records": 200
+        },
+        "test": {
+          "rows": 225,
+          "unique_text": 224,
+          "unique_records": 224
+        }
+      },
+      "pairwise_exact_text_and_record_overlap": {
+        "train_dev": 2,
+        "train_test": 3,
+        "dev_test": 1
+      },
+      "holdout_claim": "Stored split supports checkpoint re-evaluation; known duplicated records must be reported and a filtered test result separately named."
+    },
+    "NER": {
+      "splits": {
+        "train": 5000,
+        "dev": 800,
+        "test": 890
+      },
+      "pairwise_exact_text_overlap": {
+        "train_dev": 0,
+        "train_test": 0,
+        "dev_test": 0
+      },
+      "holdout_claim": "No exact sentence overlap found; no source- or template-independent provenance established."
+    },
+    "neo4j_export": {
+      "path": "data/kg_build/neo4j_query_table_data.csv",
+      "sha256": "6ee1682fd2f6628ae159a6ba5eb5a8fd8d0b7549789b7657824beae8593c13f3",
+      "records": 3193,
+      "parsed_records": 3193,
+      "unparsed_records": 0,
+      "all_semantic_nodes": 2097,
+      "all_directed_typed_edges": 3193,
+      "diesel_eligible_nodes": 2063,
+      "diesel_eligible_edges": 3156,
+      "excluded_namespace_records": 37,
+      "namespace_excluded": "智能系统故障图谱",
+      "self_loops": 15,
+      "weight_fields_available": false,
+      "limitations": [
+        "CSV paths lack original case IDs and internal Neo4j IDs.",
+        "Retain all relation types and original direction; repaired/application/structural associations are not propagation gold.",
+        "Eligibility only removes a known namespace; remaining semantic edge quality requires review."
+      ]
+    }
+  },
+  "reproduction_classes": {
+    "exact_replay": [
+      "Existing local NER checkpoint on stored NER split with matched tokenizer/encoder and original evaluation logic.",
+      "Existing local RE checkpoint on stored RE split with matched tokenizer/encoder and original evaluation logic."
+    ],
+    "original_graph_descriptive_analysis": [
+      "Parse local CSV into a source-traceable semantic projection.",
+      "Analyze the diesel-eligible typed graph with explicit relation selection; call it descriptive original-export analysis."
+    ],
+    "reconstructed_replication": [
+      "Newly specified LDA topic sweep, topic coherence and Louvain community detection on deduplicated corpus/constructed graph.",
+      "Newly specified semantic/co-occurrence/structural fusion weights, bounded paths, centrality, ablative comparisons and generated plots."
+    ],
+    "not_currently_verifiable": [
+      "Exact paper LDA coherence curve or community matrix without original models/configuration.",
+      "Exact fused propagation weights/path counts without original rules and case mappings.",
+      "Expert interpretability score 6.2→9.1 without individual scores and rater records.",
+      "Core/root-cause accuracy or localization-time improvement without gold labels and timing protocol.",
+      "Temporal propagation speed/evolution without time-series observations."
+    ]
+  }
+}

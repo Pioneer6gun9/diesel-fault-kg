@@ -1,0 +1,16 @@
+{
+  "cases": 1522,
+  "unique_bodies": 1360,
+  "topic_k": 10,
+  "topic_coherence": 0.3639592023370518,
+  "base_nodes": 2063,
+  "base_edges": 3156,
+  "enhanced_nodes": 2078,
+  "enhanced_edges": 3717,
+  "paths_before": 1043,
+  "paths_after": 1338,
+  "mixed_ner_f1": 0.8131408791065248,
+  "case_ner_f1": 0.05235602094240837,
+  "re_accuracy": 0.5804597701149425,
+  "re_macro_f1": 0.5499961466110075
+}

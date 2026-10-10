@@ -1,0 +1,2 @@
+# Preserve the exact bytes used by recorded source and data fingerprints.
+* -text

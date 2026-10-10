@@ -1,0 +1,22 @@
+% English adapter for the original MAIK style; compile main.tex.
+% Include the legacy option so maik.rty can load inputenc without a clash.
+\RequirePackage[utf8,cp866]{inputenc}
+\RequirePackage[T2A,T1]{fontenc}
+\input maik.rty
+\inputencoding{utf8}
+\renewcommand{\encodingdefault}{T1}
+\fontencoding{T1}\selectfont
+\addto\captionsenglish{%
+  \def\refname{REFERENCES}%
+  \def\figurename{Fig.}%
+  \def\tablename{Table}%
+  \def\abstractname{Abstract}%
+  \def\appendixname{APPENDIX}%
+  \def\appendixesname{APPENDICES}%
+  \def\acknowledgmentsname{ACKNOWLEDGMENTS}%
+}
+\AtBeginDocument{\selectlanguage{english}\fontencoding{T1}\selectfont}
+\renewcommand{\bibsection}{\section*{\refname}}
+% Hide the original sample's diagnostic reference-type markers.
+\def\refitem#1{\relax}
+\endinput

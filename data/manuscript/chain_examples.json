@@ -1,0 +1,27 @@
+[
+  {
+    "path_id": "[\"n_0a870415e82854c6044ac87a\", \"n_e6d39915836cbadedad02d73\", \"n_c84f5b4a3211835a6d6a7256\"]",
+    "label": "Fuel filter $\\to$ Water accumulation $\\to$ Engine vibration",
+    "source_chain": "燃油滤清器 -> 积水 -> 发动机抖动"
+  },
+  {
+    "path_id": "[\"n_fe1a9ed4ba9f60a9570b69a0\", \"n_0f8e69b48028f74dd8eae0f3\", \"n_97dcb897a16156c15036e9ef\"]",
+    "label": "Thermostat $\\to$ Thermostat sticking $\\to$ Engine overheating",
+    "source_chain": "节温器 -> 节温器卡滞 -> 发动机过热"
+  },
+  {
+    "path_id": "[\"n_fe1a9ed4ba9f60a9570b69a0\", \"n_05a1094b8dd881d9d96b7314\", \"n_97dcb897a16156c15036e9ef\"]",
+    "label": "Thermostat $\\to$ Stuck-closed thermostat $\\to$ Engine overheating",
+    "source_chain": "节温器 -> 节温器卡滞在关闭位置 -> 发动机过热"
+  },
+  {
+    "path_id": "[\"n_148dbdd69a10765560495324\", \"n_d5dd80996cc98ab17b3eda51\", \"n_5d260f991f3fed1dcf4da386\"]",
+    "label": "Alternator belt $\\to$ Belt breakage $\\to$ No alternator output",
+    "source_chain": "发电机皮带 -> 发电机皮带断裂 -> 不发电"
+  },
+  {
+    "path_id": "[\"n_9b5f3c4f25d58052207363ce\", \"n_d03e1523141afdfa83714230\", \"n_c84f5b4a3211835a6d6a7256\"]",
+    "label": "Fuel tank $\\to$ Water at tank bottom $\\to$ Engine vibration",
+    "source_chain": "燃油箱 -> 燃油箱底部积水 -> 发动机抖动"
+  }
+]

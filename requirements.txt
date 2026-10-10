@@ -1,0 +1,12 @@
+torch==2.8.0
+transformers==4.44.2
+gensim==4.4.0
+seqeval==1.2.2
+numpy==2.5.3
+pandas==3.0.6
+scipy==1.18.1
+scikit-learn==1.9.1
+networkx==3.7
+jieba==0.42.1
+matplotlib==3.11.2
+safetensors==0.8.0

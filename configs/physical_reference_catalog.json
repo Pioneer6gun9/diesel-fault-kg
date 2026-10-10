@@ -1,0 +1,36 @@
+{
+  "role": "source_grounded_generic_architecture_reference_not_case_gold",
+  "verified_date": "2026-10-07",
+  "annotation_origin": "Assistant-curated Chinese aliases and architecture statements, checked against manufacturer pages; no human expert adjudication",
+  "sources": {
+    "bosch_common_rail": {"title": "Common-rail system with piezo injectors", "url": "https://www.bosch-mobility.com/en/solutions/powertrain/diesel/common-rail-system-piezo/", "paraphrase": "高压泵向共轨供给高压燃油，共轨向各喷油器分配燃油，喷油器安装于气缸；电子控制单元控制喷油。适用于该页面描述的共轨系统。"},
+    "cummins_turbo": {"title": "How a Turbocharger Works", "url": "https://www.cummins.com/en-apac/components/turbochargers/how-a-turbocharger-works", "paraphrase": "废气驱动涡轮，轴连接涡轮与压气机；压气机压缩进气并送入发动机。适用于所述涡轮增压结构。"},
+    "perkins_cooling": {"title": "Cooling systems", "url": "https://www.perkins.com/en_GB/aftermarket/maintenance/product-offering/cooling-systems.html", "paraphrase": "水冷系统包括散热器、冷却风扇、节温器和水泵；水泵循环冷却水，节温器调节冷却流动，散热器散热。该页也说明机油泵对发动机润滑的重要性。"}
+  },
+  "roles": {
+    "high_pressure_pump": {"aliases": ["高压泵"], "system": "fuel_combustion", "source": "bosch_common_rail"},
+    "fuel_rail": {"aliases": ["共轨管", "高压油轨", "燃油轨", "共轨"], "system": "fuel_combustion", "source": "bosch_common_rail"},
+    "injector": {"aliases": ["喷油器", "喷油嘴"], "system": "fuel_combustion", "source": "bosch_common_rail"},
+    "cylinder": {"aliases": ["气缸", "汽缸"], "system": "fuel_combustion", "source": "bosch_common_rail", "ambiguous_scope": true},
+    "engine_ecu": {"aliases": ["ECU", "发动机控制单元", "电子控制单元"], "system": "electrical_control", "source": "bosch_common_rail", "ambiguous_scope": true},
+    "turbocharger": {"aliases": ["涡轮增压器"], "system": "intake_exhaust", "source": "cummins_turbo"},
+    "turbine": {"aliases": ["涡轮叶轮"], "system": "intake_exhaust", "source": "cummins_turbo"},
+    "compressor": {"aliases": ["压气机叶轮", "压气机"], "system": "intake_exhaust", "source": "cummins_turbo", "ambiguous_scope": true},
+    "turbo_shaft": {"aliases": ["增压器轴", "涡轮轴"], "system": "intake_exhaust", "source": "cummins_turbo"},
+    "radiator": {"aliases": ["散热器"], "system": "cooling_heat", "source": "perkins_cooling", "ambiguous_scope": true},
+    "cooling_fan": {"aliases": ["冷却风扇", "散热风扇"], "system": "cooling_heat", "source": "perkins_cooling"},
+    "thermostat": {"aliases": ["节温器"], "system": "cooling_heat", "source": "perkins_cooling"},
+    "water_pump": {"aliases": ["冷却水泵", "发动机水泵"], "system": "cooling_heat", "source": "perkins_cooling"},
+    "engine_oil_pump": {"aliases": ["机油泵"], "system": "mechanical_sealing", "source": "perkins_cooling"}
+  },
+  "relations": [
+    {"source_role": "high_pressure_pump", "target_role": "fuel_rail", "kind": "fuel_supply", "source": "bosch_common_rail"},
+    {"source_role": "fuel_rail", "target_role": "injector", "kind": "fuel_distribution", "source": "bosch_common_rail"},
+    {"source_role": "injector", "target_role": "cylinder", "kind": "fuel_injection", "source": "bosch_common_rail"},
+    {"source_role": "engine_ecu", "target_role": "injector", "kind": "injection_control", "source": "bosch_common_rail"},
+    {"source_role": "turbine", "target_role": "turbo_shaft", "kind": "mechanical_connection", "source": "cummins_turbo"},
+    {"source_role": "turbo_shaft", "target_role": "compressor", "kind": "mechanical_drive", "source": "cummins_turbo"},
+    {"source_role": "cooling_fan", "target_role": "radiator", "kind": "cooling_airflow", "source": "perkins_cooling"}
+  ],
+  "limitations": ["Generic architecture does not establish model-specific component compatibility, failure causality or case root causes.", "Chinese lexical alias matching is a new disclosed rule, not expert physical-system gold.", "Absent reference pairs are unknown, not physically invalid negative labels.", "No manufacturer page supplies the paper's quantitative physical correlation strengths or fusion coefficients."]
+}
