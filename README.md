@@ -139,16 +139,6 @@ diesel-fault-kg/
 
 原算法 `EntityExtraction.py` 和 `RelationExtraction.py` 保存在 `data/kg_build/`，统一实现与流程调度位于 `src/diesel_kg/`。
 
-## 模拟数据
-
-生成带有 **SIMULATED** 标记的流程验证数据：
-
-```bash
-./run simulate --seed 20261008 --cases-per-system 12 --output results/simulated
-```
-
-该命令生成 CSV/JSON 数据和记录生成假设、随机种子及校验信息的 `manifest.json`，不生成 Excel 文件。模拟数据包括虚拟关系标注、根因与传播链、物理标签、SIS 评分、故障定位计时和事件时间戳。模拟数据独立保存，完整实测流程不会将其作为真实验证证据。
-
 ## 许可证
 
 采用 Apache-2.0 许可证，详见 [LICENSE](LICENSE)。
